@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33103.201
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "plugin_KinectV1", "plugin_KinectV1\plugin_KinectV1.csproj", "{8DED8B5D-9BE5-48FE-88F0-2DAAFE28EBAD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KinectHandler", "KinectHandler\KinectHandler.vcxproj", "{A2F2D832-190E-4933-8D11-B27459BA2D8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DED8B5D-9BE5-48FE-88F0-2DAAFE28EBAD}.Debug|x64.ActiveCfg = Debug|x64
+		{8DED8B5D-9BE5-48FE-88F0-2DAAFE28EBAD}.Debug|x64.Build.0 = Debug|x64
+		{8DED8B5D-9BE5-48FE-88F0-2DAAFE28EBAD}.Release|x64.ActiveCfg = Release|x64
+		{8DED8B5D-9BE5-48FE-88F0-2DAAFE28EBAD}.Release|x64.Build.0 = Release|x64
+		{A2F2D832-190E-4933-8D11-B27459BA2D8C}.Debug|x64.ActiveCfg = Debug|x64
+		{A2F2D832-190E-4933-8D11-B27459BA2D8C}.Debug|x64.Build.0 = Debug|x64
+		{A2F2D832-190E-4933-8D11-B27459BA2D8C}.Release|x64.ActiveCfg = Release|x64
+		{A2F2D832-190E-4933-8D11-B27459BA2D8C}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A2ED7DB-1F32-4339-B5AF-62DBEA462A58}
+	EndGlobalSection
+EndGlobal
