@@ -161,6 +161,12 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
         });
     }
 
+    public override void StatusChangedHandler() 
+    {
+        // Request a refresh of the status UI
+        Host?.RefreshStatusInterface();
+    }
+
     public void SignalJoint(int jointId)
     {
         // ignored

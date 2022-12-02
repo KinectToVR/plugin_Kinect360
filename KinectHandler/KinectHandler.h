@@ -8,6 +8,7 @@ using namespace System;
 using namespace Numerics;
 using namespace Collections::Generic;
 using namespace ComponentModel::Composition;
+using namespace Runtime::InteropServices;
 
 using namespace Amethyst::Plugins::Contract;
 
@@ -28,19 +29,36 @@ namespace KinectHandler
 		property int JointRole;
 	};
 
+	delegate void FunctionToCallDelegate();
+
 	public ref class KinectHandler
 	{
 	private:
-		KinectWrapper* kinect;
+		KinectWrapper* kinect_;
+		FunctionToCallDelegate^ function_;
 
 	public:
+		KinectHandler() : kinect_(new KinectWrapper())
+		{
+			function_ = gcnew FunctionToCallDelegate(this, &KinectHandler::StatusChangedHandler);
+			pin_ptr<FunctionToCallDelegate^> tmp = &function_; // Pin the function delegate
+
+			status_changed_event = static_cast<void(__cdecl*)()>(
+				Marshal::GetFunctionPointerForDelegate(function_).ToPointer());
+		}
+		
+		virtual void StatusChangedHandler()
+		{
+			// implemented in the c# handler
+		}
+
 		List<KinectJoint^>^ GetTrackedKinectJoints()
 		{
 			if (!IsInitialized) return gcnew List<KinectJoint^>;
 
-			const auto& positions = kinect->skeleton_positions();
-			const auto& orientations = kinect->bone_orientations();
-			const auto& states = kinect->tracking_states();
+			const auto& positions = kinect_->skeleton_positions();
+			const auto& orientations = kinect_->bone_orientations();
+			const auto& states = kinect_->tracking_states();
 
 			auto trackedKinectJoints = gcnew List<KinectJoint^>;
 			for each (auto v in Enum::GetValues<TrackedJointType>())
@@ -56,18 +74,18 @@ namespace KinectHandler
 				auto joint = gcnew KinectJoint(static_cast<int>(v));
 
 				joint->TrackingState =
-					states[kinect->KinectJointType(static_cast<int>(v))];
+					states[kinect_->KinectJointType(static_cast<int>(v))];
 
 				joint->Position = Vector3(
-					positions[kinect->KinectJointType(static_cast<int>(v))].x,
-					positions[kinect->KinectJointType(static_cast<int>(v))].y,
-					positions[kinect->KinectJointType(static_cast<int>(v))].z);
+					positions[kinect_->KinectJointType(static_cast<int>(v))].x,
+					positions[kinect_->KinectJointType(static_cast<int>(v))].y,
+					positions[kinect_->KinectJointType(static_cast<int>(v))].z);
 
 				joint->Orientation = Quaternion(
-					orientations[kinect->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.x,
-					orientations[kinect->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.y,
-					orientations[kinect->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.z,
-					orientations[kinect->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.w);
+					orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.x,
+					orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.y,
+					orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.z,
+					orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.w);
 
 				trackedKinectJoints->Add(joint);
 			}
@@ -77,23 +95,23 @@ namespace KinectHandler
 
 		property bool IsInitialized
 		{
-			bool get() { return kinect->is_initialized(); }
+			bool get() { return kinect_->is_initialized(); }
 		}
 
 		property bool IsSkeletonTracked
 		{
-			bool get() { return kinect->skeleton_tracked(); }
+			bool get() { return kinect_->skeleton_tracked(); }
 		}
 
 		property int DeviceStatus
 		{
-			int get() { return kinect->status_result(); }
+			int get() { return kinect_->status_result(); }
 		}
 
 		property int ElevationAngle
 		{
-			int get() { return kinect->elevation_angle(); }
-			void set(const int value) { kinect->elevation_angle(value); }
+			int get() { return kinect_->elevation_angle(); }
+			void set(const int value) { kinect_->elevation_angle(value); }
 		}
 
 		property bool IsSettingsDaemonSupported
@@ -101,18 +119,14 @@ namespace KinectHandler
 			bool get() { return DeviceStatus == 0; }
 		}
 
-		KinectHandler() : kinect(new KinectWrapper())
-		{
-		}
-
 		int InitializeKinect()
 		{
-			return kinect->initialize();
+			return kinect_->initialize();
 		}
 
 		int ShutdownKinect()
 		{
-			return kinect->shutdown();
+			return kinect_->shutdown();
 		}
 	};
 }

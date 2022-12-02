@@ -12,6 +12,15 @@
 #include <thread>
 #include <array>
 #include <map>
+#include <functional>
+
+inline void (*status_changed_event)();
+inline void statusCallbackEvent(
+	HRESULT hrStatus, const OLECHAR* instanceName, 
+	const OLECHAR* uniqueDeviceName, void* pUserData)
+{
+	status_changed_event(); // Notify the listener
+}
 
 class KinectWrapper
 {
@@ -61,7 +70,7 @@ class KinectWrapper
 
 	bool initKinect()
 	{
-		//Get a working Kinect Sensor
+		// Get a working Kinect Sensor
 		int numSensors = 0;
 		if (NuiGetSensorCount(&numSensors) < 0 || numSensors < 1)
 		{
@@ -71,13 +80,17 @@ class KinectWrapper
 		{
 			return false;
 		}
-		//Initialize Sensor
+
+		// Register a StatusChanged event
+		NuiSetDeviceStatusCallback(&statusCallbackEvent, nullptr);
+
+		// Initialize Sensor
 		HRESULT hr = kinectSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
 		kinectSensor->NuiSkeletonTrackingEnable(nullptr, 0); //NUI_SKELETON_TRACKING_FLAG_ENABLE_IN_NEAR_RANGE
 
 		return kinectSensor;
 	}
-
+	
 	bool acquireKinectFrame(NUI_IMAGE_FRAME& imageFrame, HANDLE& rgbStream, INuiSensor*& sensor)
 	{
 		return (sensor->NuiImageStreamGetNextFrame(rgbStream, 1, &imageFrame) < 0);
@@ -266,4 +279,5 @@ public:
 	{
 		return KinectJointTypeDictionary.at(static_cast<JointType>(kinectJointType));
 	}
+
 };
