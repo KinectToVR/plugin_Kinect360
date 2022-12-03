@@ -24,6 +24,8 @@ public static class DeviceData
 [Export(typeof(ITrackingDevice))]
 [ExportMetadata("Name", DeviceData.Name)]
 [ExportMetadata("Guid", DeviceData.Guid)]
+[ExportMetadata("Publisher", "K2VR Team")]
+[ExportMetadata("Website", "https://github.com/KinectToVR/plugin_KinectV1")]
 public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
 {
     [Import(typeof(IAmethystHost))] private IAmethystHost Host { get; set; }
