@@ -48,7 +48,7 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
             .Where(x => x is not TrackedJointType.JointNeck and not TrackedJointType.JointManual and not
                 TrackedJointType.JointHandTipLeft and not TrackedJointType.JointHandTipRight and not 
                 TrackedJointType.JointThumbLeft and not TrackedJointType.JointThumbRight)
-            .Select(x => new TrackedJoint { JointName = x.ToString(), Role = x }).ToList();
+            .Select(x => new TrackedJoint { Name = x.ToString(), Role = x }).ToList();
 
     public string DeviceStatusString => PluginLoaded
         ? DeviceStatus switch
@@ -158,8 +158,8 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
             TrackedJoints[trackedJoints.IndexOf(x)].TrackingState =
                 (TrackedJointState)x.TrackingState;
 
-            TrackedJoints[trackedJoints.IndexOf(x)].JointPosition = x.Position;
-            TrackedJoints[trackedJoints.IndexOf(x)].JointOrientation = x.Orientation;
+            TrackedJoints[trackedJoints.IndexOf(x)].Position = x.Position;
+            TrackedJoints[trackedJoints.IndexOf(x)].Orientation = x.Orientation;
         });
     }
 
