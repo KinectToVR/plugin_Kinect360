@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "plugin_OpenVR": {
+      "commandName": "Project"
+    }
+  }
+}
