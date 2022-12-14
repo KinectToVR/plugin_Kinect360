@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Reflection;
 using Amethyst.Plugins.Contract;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -15,15 +14,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace plugin_KinectV1;
 
-public static class DeviceData
-{
-    public const string Name = "Xbox 360 Kinect";
-    public const string Guid = "K2VRTEAM-AME2-APII-DVCE-DVCEKINECTV1";
-}
-
 [Export(typeof(ITrackingDevice))]
-[ExportMetadata("Name", DeviceData.Name)]
-[ExportMetadata("Guid", DeviceData.Guid)]
+[ExportMetadata("Name", "Xbox 360 Kinect")]
+[ExportMetadata("Guid", "K2VRTEAM-AME2-APII-DVCE-DVCEKINECTV1")]
 [ExportMetadata("Publisher", "K2VR Team")]
 [ExportMetadata("Website", "https://github.com/KinectToVR/plugin_KinectV1")]
 public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
@@ -46,21 +39,21 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
         // Prepend all supported joints to the joints list
         Enum.GetValues<TrackedJointType>()
             .Where(x => x is not TrackedJointType.JointNeck and not TrackedJointType.JointManual and not
-                TrackedJointType.JointHandTipLeft and not TrackedJointType.JointHandTipRight and not 
+                TrackedJointType.JointHandTipLeft and not TrackedJointType.JointHandTipRight and not
                 TrackedJointType.JointThumbLeft and not TrackedJointType.JointThumbRight)
             .Select(x => new TrackedJoint { Name = x.ToString(), Role = x }).ToList();
 
     public string DeviceStatusString => PluginLoaded
         ? DeviceStatus switch
         {
-            0 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/Success", DeviceData.Guid),
-            1 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/Initializing", DeviceData.Guid),
-            2 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotConnected", DeviceData.Guid),
-            3 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotGenuine", DeviceData.Guid),
-            4 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotSupported", DeviceData.Guid),
-            5 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/InsufficientBandwidth", DeviceData.Guid),
-            6 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotPowered", DeviceData.Guid),
-            7 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotReady", DeviceData.Guid),
+            0 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/Success"),
+            1 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/Initializing"),
+            2 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotConnected"),
+            3 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotGenuine"),
+            4 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotSupported"),
+            5 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/InsufficientBandwidth"),
+            6 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotPowered"),
+            7 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotReady"),
             _ => $"Undefined: {DeviceStatus}\nE_UNDEFINED\nSomething weird has happened, though we can't tell what."
         }
         : $"Undefined: {DeviceStatus}\nE_UNDEFINED\nSomething weird has happened, though we can't tell what.";
@@ -88,7 +81,7 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
 
         TiltTextBlock = new TextBlock
         {
-            Text = Host.RequestLocalizedString("/Plugins/KinectV1/Settings/Labels/Angle", DeviceData.Guid),
+            Text = Host.RequestLocalizedString("/Plugins/KinectV1/Settings/Labels/Angle"),
             Margin = new Thickness { Left = 3, Top = 3, Right = 5, Bottom = 3 },
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -110,20 +103,17 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
         switch (InitializeKinect())
         {
             case 0:
-                Host.Log($"[{DeviceData.Guid}] Tried to initialize the Kinect " +
-                         $"sensor with status: {DeviceStatusString}", LogSeverity.Info);
+                Host.Log($"Tried to initialize the Kinect sensor with status: {DeviceStatusString}");
                 break;
             case 1:
-                Host.Log($"[{DeviceData.Guid}] Couldn't initialize the Kinect " +
-                         $"sensor! Status: {DeviceStatusString}", LogSeverity.Warning);
+                Host.Log($"Couldn't initialize the Kinect sensor! Status: {DeviceStatusString}", LogSeverity.Warning);
                 break;
             default:
-                Host.Log($"[{DeviceData.Guid}] Tried to initialize the Kinect, " +
-                         "but a native exception occurred!", LogSeverity.Error);
+                Host.Log("Tried to initialize the Kinect, but a native exception occurred!", LogSeverity.Error);
                 break;
         }
 
-        if (IsInitialized && TiltNumberBox is not null) 
+        if (IsInitialized && TiltNumberBox is not null)
             TiltNumberBox.Value = Math.Clamp(ElevationAngle, -27, 27);
     }
 
@@ -132,20 +122,16 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
         switch (ShutdownKinect())
         {
             case 0:
-                Host.Log($"[{DeviceData.Guid}] Tried to shutdown the Kinect " +
-                         $"sensor with status: {DeviceStatusString}", LogSeverity.Info);
+                Host.Log($"Tried to shutdown the Kinect sensor with status: {DeviceStatusString}");
                 break;
             case 1:
-                Host.Log($"[{DeviceData.Guid}] Kinect sensor is already shut down! " +
-                         $"Status: {DeviceStatusString}", LogSeverity.Warning);
+                Host.Log($"Kinect sensor is already shut down! Status: {DeviceStatusString}", LogSeverity.Warning);
                 break;
             case -2:
-                Host.Log($"[{DeviceData.Guid}] Tried to shutdown the Kinect sensor, " +
-                         "but a SEH exception occurred!", LogSeverity.Error);
+                Host.Log("Tried to shutdown the Kinect sensor, but a SEH exception occurred!", LogSeverity.Error);
                 break;
             default:
-                Host.Log($"[{DeviceData.Guid}] Tried to shutdown the Kinect sensor, " +
-                         "but a native exception occurred!", LogSeverity.Error);
+                Host.Log("Tried to shutdown the Kinect sensor, but a native exception occurred!", LogSeverity.Error);
                 break;
         }
     }
@@ -163,14 +149,14 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
         });
     }
 
-    public override void StatusChangedHandler() 
-    {
-        // Request a refresh of the status UI
-        Host?.RefreshStatusInterface();
-    }
-
     public void SignalJoint(int jointId)
     {
         // ignored
+    }
+
+    public override void StatusChangedHandler()
+    {
+        // Request a refresh of the status UI
+        Host?.RefreshStatusInterface();
     }
 }
