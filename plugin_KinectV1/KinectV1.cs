@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Amethyst.Plugins.Contract;
@@ -35,13 +36,13 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
     public bool IsAppOrientationSupported => true;
     public object SettingsInterfaceRoot => InterfaceRoot;
 
-    public List<TrackedJoint> TrackedJoints { get; } =
+    public ObservableCollection<TrackedJoint> TrackedJoints { get; } =
         // Prepend all supported joints to the joints list
-        Enum.GetValues<TrackedJointType>()
+        new(Enum.GetValues<TrackedJointType>()
             .Where(x => x is not TrackedJointType.JointNeck and not TrackedJointType.JointManual and not
                 TrackedJointType.JointHandTipLeft and not TrackedJointType.JointHandTipRight and not
                 TrackedJointType.JointThumbLeft and not TrackedJointType.JointThumbRight)
-            .Select(x => new TrackedJoint { Name = x.ToString(), Role = x }).ToList();
+            .Select(x => new TrackedJoint { Name = x.ToString(), Role = x }));
 
     public string DeviceStatusString => PluginLoaded
         ? DeviceStatus switch
