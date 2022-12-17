@@ -130,12 +130,12 @@ class KinectWrapper
 		JointSpineWaist,
 		JointHipLeft,
 		JointKneeLeft,
-		JointAnkleLeft,
 		JointFootLeft,
+		JointFootTipLeft,
 		JointHipRight,
 		JointKneeRight,
-		JointAnkleRight,
 		JointFootRight,
+		JointFootTipRight,
 		JointManual
 	};
 
@@ -155,12 +155,12 @@ class KinectWrapper
 		{JointHandRight, NUI_SKELETON_POSITION_HAND_RIGHT},
 		{JointHipLeft, NUI_SKELETON_POSITION_HIP_LEFT},
 		{JointKneeLeft, NUI_SKELETON_POSITION_KNEE_LEFT},
-		{JointAnkleLeft, NUI_SKELETON_POSITION_ANKLE_LEFT},
-		{JointFootLeft, NUI_SKELETON_POSITION_FOOT_LEFT},
+		{JointFootLeft, NUI_SKELETON_POSITION_ANKLE_LEFT},
+		{JointFootTipLeft, NUI_SKELETON_POSITION_FOOT_LEFT},
 		{JointHipRight, NUI_SKELETON_POSITION_HIP_RIGHT},
 		{JointKneeRight, NUI_SKELETON_POSITION_KNEE_RIGHT},
-		{JointAnkleRight, NUI_SKELETON_POSITION_ANKLE_RIGHT},
-		{JointFootRight, NUI_SKELETON_POSITION_FOOT_RIGHT}
+		{JointFootRight, NUI_SKELETON_POSITION_ANKLE_RIGHT},
+		{JointFootTipRight, NUI_SKELETON_POSITION_FOOT_RIGHT}
 	};
 
 public:
