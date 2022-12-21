@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using Amethyst.Plugins.Contract;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -96,7 +97,7 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
             }
         };
 
-        PluginLoaded = true;
+        PluginLoaded = true; // Mark as already-loaded
     }
 
     public void Initialize()
@@ -157,6 +158,13 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
 
     public override void StatusChangedHandler()
     {
+        // The Kinect sensor requested a refresh
+        InitializeKinect();
+
+        if (IsInitialized) // Also refresh internal UI
+            TiltNumberBox.DispatcherQueue.TryEnqueue(() =>
+                TiltNumberBox.Value = Math.Clamp(ElevationAngle, -27, 27));
+
         // Request a refresh of the status UI
         Host?.RefreshStatusInterface();
     }
