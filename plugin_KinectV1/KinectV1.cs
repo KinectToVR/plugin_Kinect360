@@ -2,11 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
 using Amethyst.Plugins.Contract;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -59,6 +57,15 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
             _ => $"Undefined: {DeviceStatus}\nE_UNDEFINED\nSomething weird has happened, though we can't tell what."
         }
         : $"Undefined: {DeviceStatus}\nE_UNDEFINED\nSomething weird has happened, though we can't tell what.";
+
+    public Uri ErrorDocsUri => new(DeviceStatus switch
+    {
+        6 => $"https://docs.k2vr.tech/{Host?.DocsLanguageCode ?? "en"}/360/troubleshooting/notpowered/",
+        7 => $"https://docs.k2vr.tech/{Host?.DocsLanguageCode ?? "en"}/360/troubleshooting/notready/",
+        3 => $"https://docs.k2vr.tech/{Host?.DocsLanguageCode ?? "en"}/360/troubleshooting/notgenuine/",
+        5 => $"https://docs.k2vr.tech/{Host?.DocsLanguageCode ?? "en"}/360/troubleshooting/insufficientbandwidth/",
+        _ => $"https://docs.k2vr.tech/{Host?.DocsLanguageCode ?? "en"}/360/troubleshooting/"
+    });
 
     public void OnLoad()
     {
