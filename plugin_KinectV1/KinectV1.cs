@@ -86,6 +86,7 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
 
             sender.Value = Math.Clamp(sender.Value, -27, 27);
             ElevationAngle = (int)sender.Value; // Update
+            Host?.PlayAppSound(SoundType.Invoke);
         };
 
         TiltTextBlock = new TextBlock
