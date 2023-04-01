@@ -48,4 +48,6 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "plugin_KinectV1 Build Artifact"
-          files: "plugin_KinectV1/bin/Release/Publish/plugin_KinectV1.zip"
+          files: |
+            ./plugin_KinectV1/bin/Release/Publish/plugin_KinectV1.zip
+            ./external/manifest.json

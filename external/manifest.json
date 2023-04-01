@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0.0",
+  "display_name": "Xbox 360 Kinect",
+  "download":  "plugin_KinectV1.zip",
+  "changelog": "Added AppSounds on Settings UI actions.",
+  "guid": "K2VRTEAM-AME2-APII-DVCE-DVCEKINECTV1"
+}
