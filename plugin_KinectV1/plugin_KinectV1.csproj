@@ -6,6 +6,7 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <RootNamespace>plugin_KinectV1</RootNamespace>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+    <PublishTrimmed>true</PublishTrimmed>
     <Platforms>x64</Platforms>
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
