@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Numerics;
 using Amethyst.Plugins.Contract;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -155,8 +156,8 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
             TrackedJoints[trackedJoints.IndexOf(x)].TrackingState =
                 (TrackedJointState)x.TrackingState;
 
-            TrackedJoints[trackedJoints.IndexOf(x)].Position = x.Position;
-            TrackedJoints[trackedJoints.IndexOf(x)].Orientation = x.Orientation;
+            TrackedJoints[trackedJoints.IndexOf(x)].Position = x.Position.Safe();
+            TrackedJoints[trackedJoints.IndexOf(x)].Orientation = x.Orientation.Safe();
         });
     }
 
@@ -176,5 +177,23 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
 
         // Request a refresh of the status UI
         Host?.RefreshStatusInterface();
+    }
+}
+
+internal static class PoseUtils
+{
+    public static Quaternion Safe(this Quaternion q)
+    {
+        return (q.X is 0 && q.Y is 0 && q.Z is 0 && q.W is 0) ||
+               float.IsNaN(q.X) || float.IsNaN(q.Y) || float.IsNaN(q.Z) || float.IsNaN(q.W)
+            ? Quaternion.Identity // Return a placeholder quaternion
+            : q; // If everything is fine, return the actual orientation
+    }
+
+    public static Vector3 Safe(this Vector3 v)
+    {
+        return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z)
+            ? Vector3.Zero // Return a placeholder position vector
+            : v; // If everything is fine, return the actual orientation
     }
 }
