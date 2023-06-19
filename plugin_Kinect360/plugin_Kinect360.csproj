@@ -4,7 +4,7 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
-    <RootNamespace>plugin_KinectV1</RootNamespace>
+    <RootNamespace>plugin_Kinect360</RootNamespace>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <PublishTrimmed>true</PublishTrimmed>
     <Platforms>x64</Platforms>

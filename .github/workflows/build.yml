@@ -34,12 +34,12 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
 
       - name: Restore and build (publish)
-        run: msbuild plugin_KinectV1 /restore /p:Platform=x64 /p:PlatformTarget=x64 /p:Configuration=Release /p:RuntimeIdentifier=win10-x64 /t:Publish /p:PublishProfile=plugin_KinectV1\Properties\PublishProfiles\FolderProfile.pubxml
+        run: msbuild plugin_Kinect360 /restore /p:Platform=x64 /p:PlatformTarget=x64 /p:Configuration=Release /p:RuntimeIdentifier=win10-x64 /t:Publish /p:PublishProfile=plugin_Kinect360\Properties\PublishProfiles\FolderProfile.pubxml
         
       - name: Pack published files
         run: |
-          cd plugin_KinectV1/bin/Release/Publish
-          7z a plugin_KinectV1.zip *
+          cd plugin_Kinect360/bin/Release/Publish
+          7z a plugin_Kinect360.zip *
         
       - name: Upload plugin artifact
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -47,7 +47,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
-          title: "plugin_KinectV1 Build Artifact"
+          title: "plugin_Kinect360 Build Artifact"
           files: |
-            ./plugin_KinectV1/bin/Release/Publish/plugin_KinectV1.zip
+            ./plugin_Kinect360/bin/Release/Publish/plugin_Kinect360.zip
             ./external/manifest.json

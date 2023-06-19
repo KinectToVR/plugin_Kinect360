@@ -2,39 +2,39 @@
   "language": "en",
   "messages": [
     {
-      "id": "/Plugins/KinectV1/Statuses/Success",
+      "id": "/Plugins/Kinect360/Statuses/Success",
       "translation": "Success!\nS_OK\nEverything's good!"
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/Initializing",
+      "id": "/Plugins/Kinect360/Statuses/Initializing",
       "translation": "INITIALIZING\nS_NUI_INITIALIZING\nThe device is connected, but still initializing."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotConnected",
+      "id": "/Plugins/Kinect360/Statuses/NotConnected",
       "translation": "NOTCONNECTED\nE_NUI_NOTCONNECTED\nThe device is not connected."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotGenuine",
+      "id": "/Plugins/Kinect360/Statuses/NotGenuine",
       "translation": "NOTGENUINE\nE_NUI_NOTGENUINE\nThe SDK is reporting the Kinect as invalid."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotSupported",
+      "id": "/Plugins/Kinect360/Statuses/NotSupported",
       "translation": "NOTSUPPORTED\nE_NUI_NOTSUPPORTED\nThe device is unsupported. (Xbox Kinect requires the SDK)"
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/InsufficientBandwidth",
+      "id": "/Plugins/Kinect360/Statuses/InsufficientBandwidth",
       "translation": "INSUFFICIENTBANDWIDTH\nE_NUI_INSUFFICIENTBANDWIDTH\nThe device is connected to a hub without the necessary bandwidth requirements."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotPowered",
+      "id": "/Plugins/Kinect360/Statuses/NotPowered",
       "translation": "NOTPOWERED\nE_NUI_NOTPOWERED\nThere is either a problem with your adapter/cables or with the Kinect device driver registration in Windows."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotReady",
+      "id": "/Plugins/Kinect360/Statuses/NotReady",
       "translation": "NOTREADY\nE_NUI_NOTREADY\nThere was some other unspecified error."
     },
     {
-      "id": "/Plugins/KinectV1/Settings/Labels/Angle",
+      "id": "/Plugins/Kinect360/Settings/Labels/Angle",
       "translation": "Kinect elevation angle:"
     }
   ]

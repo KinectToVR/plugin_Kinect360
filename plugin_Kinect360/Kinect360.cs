@@ -13,15 +13,15 @@ using Microsoft.UI.Xaml.Controls;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace plugin_KinectV1;
+namespace plugin_Kinect360;
 
 [Export(typeof(ITrackingDevice))]
 [ExportMetadata("Name", "Xbox 360 Kinect")]
 [ExportMetadata("Guid", "K2VRTEAM-AME2-APII-DVCE-DVCEKINECTV1")]
 [ExportMetadata("Publisher", "K2VR Team")]
 [ExportMetadata("Version", "1.0.0.0")]
-[ExportMetadata("Website", "https://github.com/KinectToVR/plugin_KinectV1")]
-public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
+[ExportMetadata("Website", "https://github.com/KinectToVR/plugin_Kinect360")]
+public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
 {
     [Import(typeof(IAmethystHost))] private IAmethystHost Host { get; set; }
 
@@ -48,14 +48,14 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
     public string DeviceStatusString => PluginLoaded
         ? DeviceStatus switch
         {
-            0 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/Success"),
-            1 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/Initializing"),
-            2 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotConnected"),
-            3 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotGenuine"),
-            4 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotSupported"),
-            5 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/InsufficientBandwidth"),
-            6 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotPowered"),
-            7 => Host.RequestLocalizedString("/Plugins/KinectV1/Statuses/NotReady"),
+            0 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/Success"),
+            1 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/Initializing"),
+            2 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/NotConnected"),
+            3 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/NotGenuine"),
+            4 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/NotSupported"),
+            5 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/InsufficientBandwidth"),
+            6 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/NotPowered"),
+            7 => Host.RequestLocalizedString("/Plugins/Kinect360/Statuses/NotReady"),
             _ => $"Undefined: {DeviceStatus}\nE_UNDEFINED\nSomething weird has happened, though we can't tell what."
         }
         : $"Undefined: {DeviceStatus}\nE_UNDEFINED\nSomething weird has happened, though we can't tell what.";
@@ -93,7 +93,7 @@ public class KinectV1 : KinectHandler.KinectHandler, ITrackingDevice
 
         TiltTextBlock = new TextBlock
         {
-            Text = Host.RequestLocalizedString("/Plugins/KinectV1/Settings/Labels/Angle"),
+            Text = Host.RequestLocalizedString("/Plugins/Kinect360/Settings/Labels/Angle"),
             Margin = new Thickness { Left = 3, Top = 3, Right = 5, Bottom = 3 },
             VerticalAlignment = VerticalAlignment.Center
         };

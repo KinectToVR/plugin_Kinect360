@@ -2,39 +2,39 @@
   "language": "fr",
   "messages": [
     {
-      "id": "/Plugins/KinectV1/Statuses/Success",
+      "id": "/Plugins/Kinect360/Statuses/Success",
       "translation": "Succès!\nS_OK\nTout fonctionne!"
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/Initializing",
+      "id": "/Plugins/Kinect360/Statuses/Initializing",
       "translation": "INITIALIZING\nS_NUI_INITIALIZING\nL'appareil est connecté, mais encore en initialisation."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotConnected",
+      "id": "/Plugins/Kinect360/Statuses/NotConnected",
       "translation": "NOTCONNECTED\nE_NUI_NOTCONNECTED\nL'appareil n'est pas connecté."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotGenuine",
+      "id": "/Plugins/Kinect360/Statuses/NotGenuine",
       "translation": "NOTGENUINE\nE_NUI_NOTGENUINE\nLe SDK reporte la Kinect comme étant invalide."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotSupported",
+      "id": "/Plugins/Kinect360/Statuses/NotSupported",
       "translation": "NOTSUPPORTED\nE_NUI_NOTSUPPORTED\nL'appareil n'est pas supporté. (Kinect pour Xbox requiert le SDK)"
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/InsufficientBandwidth",
+      "id": "/Plugins/Kinect360/Statuses/InsufficientBandwidth",
       "translation": "INSUFFICIENTBANDWIDTH\nE_NUI_INSUFFICIENTBANDWIDTH\nL'appareil est connecté a un hub qui n'offre pas pas la bande passante nécessaire."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotPowered",
+      "id": "/Plugins/Kinect360/Statuses/NotPowered",
       "translation": "NOTPOWERED\nE_NUI_NOTPOWERED\nIl y a un problème soit avec votre adaptateur/cables, ou avec les pilotes de la Kinect dans Windows."
     },
     {
-      "id": "/Plugins/KinectV1/Statuses/NotReady",
+      "id": "/Plugins/Kinect360/Statuses/NotReady",
       "translation": "NOTREADY\nE_NUI_NOTREADY\nUne erreur non spécifiée est survenue."
     },
     {
-      "id": "/Plugins/KinectV1/Settings/Labels/Angle",
+      "id": "/Plugins/Kinect360/Settings/Labels/Angle",
       "translation": "Angle d'élévation de Kinect:"
     }
   ]

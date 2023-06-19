@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "plugin_KinectV1", "plugin_KinectV1\plugin_KinectV1.csproj", "{8DED8B5D-9BE5-48FE-88F0-2DAAFE28EBAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "plugin_Kinect360", "plugin_Kinect360\plugin_Kinect360.csproj", "{8DED8B5D-9BE5-48FE-88F0-2DAAFE28EBAD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KinectHandler", "KinectHandler\KinectHandler.vcxproj", "{A2F2D832-190E-4933-8D11-B27459BA2D8C}"
 EndProject
