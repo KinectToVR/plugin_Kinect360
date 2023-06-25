@@ -1,0 +1,41 @@
+{
+  "language": "it",
+  "messages": [
+    {
+      "id": "/Plugins/Kinect360/Statuses/Success",
+      "translation": "Successo!\nS_OK\nVa tutto bene!"
+    },
+    {
+      "id": "/Plugins/Kinect360/Statuses/Initializing",
+      "translation": "INIZIALIZZAZIONE\nS_NUI_INITIALIZING\nIl dispositivo è connesso ma si sta ancora inizializzando."
+    },
+    {
+      "id": "/Plugins/Kinect360/Statuses/NotConnected",
+      "translation": "NON CONNESSO\nE_NUI_NOTCONNECTED\nIl dispositivo non è connesso."
+    },
+    {
+      "id": "/Plugins/Kinect360/Statuses/NotGenuine",
+      "translation": "NON GENUINO\nE_NUI_NOTGENUINE\nL'SDK rileva il Kinect come invalido."
+    },
+    {
+      "id": "/Plugins/Kinect360/Statuses/NotSupported",
+      "translation": "NON SUPPORTATO\nE_NUI_NOTSUPPORTED\nIl dispositivo non è supportato. (Xbox Kinect richiede l'SDK)"
+    },
+    {
+      "id": "/Plugins/Kinect360/Statuses/InsufficientBandwidth",
+      "translation": "BANDA INSUFFICIENTE\nE_NUI_INSUFFICIENTBANDWIDTH\nIl dispostivo è connesso all'hub senza i requisiti necessari."
+    },
+    {
+      "id": "/Plugins/Kinect360/Statuses/NotPowered",
+      "translation": "NON ALIMENTATO\nE_NUI_NOTPOWERED\nO c'è un problema con il tuo adattatore/i tuoi cavi o con la registrazione dei driver del Kinect su Windows."
+    },
+    {
+      "id": "/Plugins/Kinect360/Statuses/NotReady",
+      "translation": "NON PRONTO\nE_NUI_NOTREADY\nC'è stato un problema non specificato."
+    },
+    {
+      "id": "/Plugins/Kinect360/Settings/Labels/Angle",
+      "translation": "Angolo di rialzo:"
+    }
+  ]
+}
