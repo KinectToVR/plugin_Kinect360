@@ -23,7 +23,7 @@ namespace plugin_Kinect360;
 [ExportMetadata("Website", "https://github.com/KinectToVR/plugin_Kinect360")]
 [ExportMetadata("DependencyLink", "https://docs.k2vr.tech/{0}/360/setup/")]
 [ExportMetadata("DependencySource", "https://download.microsoft.com/download/E/C/5/EC50686B-82F4-4DBF-A922-980183B214E6/KinectRuntime-v1.8-Setup.exe")]
-[ExportMetadata("DependencySourceSilent", null)]
+[ExportMetadata("DependencyInstaller", typeof(SdkInstaller))]
 public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
 {
     [Import(typeof(IAmethystHost))] private IAmethystHost Host { get; set; }
