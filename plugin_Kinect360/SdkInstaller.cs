@@ -10,8 +10,22 @@ using System.Threading.Tasks;
 using Amethyst.Plugins.Contract;
 using Windows.Storage;
 using RestSharp;
+using Microsoft.UI.Xaml.Controls;
 
 namespace plugin_Kinect360;
+
+internal class SetupData : ICoreSetupData
+{
+    public object PluginIcon => new BitmapIcon
+    {
+        UriSource = new Uri(Path.Join(Directory.GetParent(
+                Assembly.GetExecutingAssembly().Location)!.FullName,
+            "Assets", "Resources", "icon.png"))
+    };
+
+    public string GroupName => "kinect";
+    public Type PluginType => typeof(ITrackingDevice);
+}
 
 internal class SdkInstaller : IDependencyInstaller
 {
@@ -88,6 +102,8 @@ internal class SdkInstaller : IDependencyInstaller
         }
     }
 
+    public IDependencyInstaller.ILocalizationHost Host { get; set; }
+
     public async Task<bool> Install(IProgress<InstallationProgress> progress)
     {
         return
@@ -124,7 +140,11 @@ internal class SdkInstaller : IDependencyInstaller
         {
             using var client = new RestClient();
             progress.Report(new InstallationProgress
-                { IsIndeterminate = true, StageTitle = "Downloading WiX Toolset..." });
+            {
+                IsIndeterminate = true,
+                StageTitle = Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Downloading/WiX") ??
+                             "Downloading WiX Toolset"
+            });
 
             // Create a stream reader using the received Installer Uri
             await using var stream =
@@ -142,7 +162,8 @@ internal class SdkInstaller : IDependencyInstaller
                 {
                     IsIndeterminate = false,
                     OverallProgress = innerProgress / 34670186.0,
-                    StageTitle = "Downloading WiX Toolset..."
+                    StageTitle = Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Downloading/WiX") ??
+                                 "Downloading WiX Toolset"
                 });
             }); // The runtime will do the rest for us
 
@@ -167,7 +188,9 @@ internal class SdkInstaller : IDependencyInstaller
                     progress.Report(new InstallationProgress
                     {
                         IsIndeterminate = true,
-                        StageTitle = $"Toolset extraction failed! Exception: {e.Message}"
+                        StageTitle =
+                            (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Exceptions/WiX/Extraction") ??
+                             "Toolset extraction failed! Exception: {0}").Replace("{0}", e.Message)
                     });
 
                     return false;
@@ -181,7 +204,8 @@ internal class SdkInstaller : IDependencyInstaller
             progress.Report(new InstallationProgress
             {
                 IsIndeterminate = true,
-                StageTitle = $"Toolset installation failed! Exception: {e.Message}"
+                StageTitle = (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Exceptions/WiX/Installation") ??
+                              "Toolset installation failed! Exception: {0}").Replace("{0}", e.Message)
             });
             return false;
         }
@@ -195,7 +219,11 @@ internal class SdkInstaller : IDependencyInstaller
         {
             using var client = new RestClient();
             progress.Report(new InstallationProgress
-                { IsIndeterminate = true, StageTitle = "Downloading Kinect for Xbox 360 SDK..." });
+            {
+                IsIndeterminate = true,
+                StageTitle = Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Downloading/Runtime") ??
+                             "Downloading Kinect for Xbox 360 SDK..."
+            });
 
             // Create a stream reader using the received Installer Uri
             await using var stream =
@@ -213,7 +241,8 @@ internal class SdkInstaller : IDependencyInstaller
                 {
                     IsIndeterminate = false,
                     OverallProgress = innerProgress / 233219096.0,
-                    StageTitle = "Downloading Kinect for Xbox 360 SDK..."
+                    StageTitle = Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Downloading/Runtime") ??
+                                 "Downloading Kinect for Xbox 360 SDK..."
                 });
             }); // The runtime will do the rest for us
 
@@ -235,7 +264,9 @@ internal class SdkInstaller : IDependencyInstaller
             progress.Report(new InstallationProgress
             {
                 IsIndeterminate = true,
-                StageTitle = $"SDK installation failed! Exception: {e.Message}"
+                StageTitle =
+                    (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Exceptions/Runtime/Installation") ??
+                     "SDK installation failed! Exception: {0}").Replace("{0}", e.Message)
             });
             return false;
         }
@@ -247,7 +278,11 @@ internal class SdkInstaller : IDependencyInstaller
         {
             using var client = new RestClient();
             progress.Report(new InstallationProgress
-                { IsIndeterminate = true, StageTitle = "Downloading Kinect for Xbox 360 Toolkit..." });
+            {
+                IsIndeterminate = true,
+                StageTitle = Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Downloading/Toolkit") ??
+                             "Downloading Kinect for Xbox 360 Toolkit..."
+            });
 
             // Create a stream reader using the received Installer Uri
             await using var stream =
@@ -265,7 +300,8 @@ internal class SdkInstaller : IDependencyInstaller
                 {
                     IsIndeterminate = false,
                     OverallProgress = innerProgress / 403021808.0,
-                    StageTitle = "Downloading Kinect for Xbox 360 Toolkit..."
+                    StageTitle = Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Downloading/Toolkit") ??
+                                 "Downloading Kinect for Xbox 360 Toolkit..."
                 });
             }); // The runtime will do the rest for us
 
@@ -286,7 +322,9 @@ internal class SdkInstaller : IDependencyInstaller
             progress.Report(new InstallationProgress
             {
                 IsIndeterminate = true,
-                StageTitle = $"Toolkit installation failed! Exception: {e.Message}"
+                StageTitle =
+                    (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Exceptions/Toolkit/Installation") ??
+                     "Toolkit installation failed! Exception: {0}").Replace("{0}", e.Message)
             });
             return false;
         }
@@ -304,7 +342,11 @@ internal class SdkInstaller : IDependencyInstaller
         try
         {
             progress.Report(new InstallationProgress
-                { IsIndeterminate = true, StageTitle = $"Unpacking {Path.GetFileName(sourceFile)}..." });
+            {
+                IsIndeterminate = true,
+                StageTitle = (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Unpacking") ??
+                              "Unpacking {0}...").Replace("{0}", Path.GetFileName(sourceFile))
+            });
 
             // dark.exe {sourceFile} -x {outDir}
             var procStart = new ProcessStartInfo
@@ -354,7 +396,12 @@ internal class SdkInstaller : IDependencyInstaller
             {
                 // WTF
                 progress.Report(new InstallationProgress
-                    { IsIndeterminate = true, StageTitle = "Failed to execute dark.exe in the allocated time!" });
+                {
+                    IsIndeterminate = true,
+                    StageTitle =
+                        Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Dark/Error/Timeout") ??
+                        "Failed to execute dark.exe in the allocated time!"
+                });
 
                 proc.Kill();
             }
@@ -363,7 +410,12 @@ internal class SdkInstaller : IDependencyInstaller
             {
                 // Assume WiX failed
                 progress.Report(new InstallationProgress
-                    { IsIndeterminate = true, StageTitle = $"Dark.exe exited with error code: {proc.ExitCode}" });
+                {
+                    IsIndeterminate = true,
+                    StageTitle =
+                        (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Dark/Error/Result") ??
+                         "Dark.exe exited with error code: {0}").Replace("{0}", proc.ExitCode.ToString())
+                });
 
                 return false;
             }
@@ -371,7 +423,12 @@ internal class SdkInstaller : IDependencyInstaller
         catch (Exception e)
         {
             progress.Report(new InstallationProgress
-                { IsIndeterminate = true, StageTitle = $"Exception: {e.Message}" });
+            {
+                IsIndeterminate = true,
+                StageTitle =
+                    (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Exceptions/Other") ??
+                     "Exception: {0}").Replace("{0}", e.Message)
+            });
 
             return false;
         }
@@ -387,7 +444,12 @@ internal class SdkInstaller : IDependencyInstaller
             {
                 // msi /qn /norestart
                 progress.Report(new InstallationProgress
-                    { IsIndeterminate = true, StageTitle = $"Installing {Path.GetFileName(installFile)}..." });
+                {
+                    IsIndeterminate = true,
+                    StageTitle =
+                        (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Installing") ??
+                         "Installing {0}...").Replace("{0}", Path.GetFileName(installFile))
+                });
 
                 var msiExecutableStart = new ProcessStartInfo
                 {
@@ -407,7 +469,12 @@ internal class SdkInstaller : IDependencyInstaller
             catch (Exception e)
             {
                 progress.Report(new InstallationProgress
-                    { IsIndeterminate = true, StageTitle = $"Exception: {e.Message}" });
+                {
+                    IsIndeterminate = true,
+                    StageTitle =
+                        (Host?.RequestLocalizedString("/Plugins/Kinect360/Stages/Exceptions/Other") ??
+                         "Exception: {0}").Replace("{0}", e.Message)
+                });
 
                 return false;
             }

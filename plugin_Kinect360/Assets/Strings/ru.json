@@ -36,6 +36,54 @@
     {
       "id": "/Plugins/Kinect360/Settings/Labels/Angle",
       "translation": "Угол возвышения Kinect:"
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Downloading/WiX",
+      "translation": "Downloading WiX Toolset..."
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Extraction",
+      "translation": "Toolset extraction failed! Exception: {0}"
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Installation",
+      "translation": "Toolset installation failed! Exception: {0}"
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Downloading/Runtime",
+      "translation": "Downloading Kinect for Xbox 360 SDK..."
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Exceptions/Runtime/Installation",
+      "translation": "SDK installation failed! Exception: {0}"
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Downloading/Toolkit",
+      "translation": "Downloading Kinect for Xbox 360 Toolkit..."
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Exceptions/Toolkit/Installation",
+      "translation": "Toolkit installation failed! Exception: {0}"
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Unpacking",
+      "translation": "Unpacking {0}..."
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Installing",
+      "translation": "Installing {0}..."
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Exceptions/Other",
+      "translation": "Exception: {0}"
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Dark/Error/Timeout",
+      "translation": "Failed to execute dark.exe in the allocated time!"
+    },
+    {
+      "id": "/Plugins/Kinect360/Stages/Dark/Error/Result",
+      "translation": "Dark.exe exited with error code: {0}"
     }
   ]
 }
