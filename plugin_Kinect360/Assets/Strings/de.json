@@ -84,6 +84,14 @@
     {
       "id": "/Plugins/Kinect360/Stages/Dark/Error/Result",
       "translation": "Dark.exe exited with error code: {0}"
+    },
+    {
+      "id": "/Plugins/Kinect360/Dependencies/Runtime/Name",
+      "translation": "Kinect for Xbox 360 SDK"
+    },
+    {
+      "id": "/Plugins/Kinect360/Dependencies/Toolkit/Name",
+      "translation": "Kinect for Xbox 360 Toolkit"
     }
   ]
 }
