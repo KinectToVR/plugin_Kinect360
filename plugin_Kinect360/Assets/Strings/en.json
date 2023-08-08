@@ -51,11 +51,11 @@
     },
     {
       "id": "/Plugins/Kinect360/Stages/Downloading/Runtime",
-      "translation": "Downloading Kinect for Xbox 360 SDK..."
+      "translation": "Downloading Kinect for Xbox 360 Runtime..."
     },
     {
       "id": "/Plugins/Kinect360/Stages/Exceptions/Runtime/Installation",
-      "translation": "SDK installation failed! Exception: {0}"
+      "translation": "Runtime installation failed! Exception: {0}"
     },
     {
       "id": "/Plugins/Kinect360/Stages/Downloading/Toolkit",
@@ -87,7 +87,7 @@
     },
     {
       "id": "/Plugins/Kinect360/Dependencies/Runtime/Name",
-      "translation": "Kinect for Xbox 360 SDK"
+      "translation": "Kinect for Xbox 360 Runtime"
     },
     {
       "id": "/Plugins/Kinect360/Dependencies/Toolkit/Name",
