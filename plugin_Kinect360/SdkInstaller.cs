@@ -52,7 +52,8 @@ internal class KinectSdk : IDependency
     private List<string> SdkFilesToInstall { get; } = new()
     {
         "KinectDrivers-v1.8-x64.WHQL.msi",
-        "KinectRuntime-v1.8-x64.msi"
+        "KinectRuntime-v1.8-x64.msi",
+        "KinectSDK-v1.8-x64.msi"
     };
 
     public IDependencyInstaller.ILocalizationHost Host { get; set; }
