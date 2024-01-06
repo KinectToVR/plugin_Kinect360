@@ -14,6 +14,8 @@ using RestSharp;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Shapes;
+using Path = System.IO.Path;
 
 namespace plugin_Kinect360;
 
@@ -95,14 +97,34 @@ internal class KinectSdk : IDependency
         }
     }
 
-    public Task<bool> Install(IProgress<InstallationProgress> progress, CancellationToken cancellationToken)
+    public async Task<bool> Install(IProgress<InstallationProgress> progress, CancellationToken cancellationToken)
     {
         // Amethyst will handle this exception for us anyway
         cancellationToken.ThrowIfCancellationRequested();
+        var dependenciesFolder = Path.Join(Directory.GetParent(
+                Assembly.GetExecutingAssembly().Location)!.FullName,
+            "Assets", "Resources", "Dependencies");
 
-        return Task.FromResult(InstallFiles(SdkFilesToInstall.Select(x => Path.Join(
-            Directory.GetParent(Assembly.GetExecutingAssembly().Location)!.FullName,
-            "Assets", "Resources", "Dependencies", x)), progress, cancellationToken));
+        // Copy to temp if amethyst is packaged
+        // ReSharper disable once InvertIf
+        if (PackageUtils.IsAmethystPackaged)
+        {
+            // Create a shared folder with the dependencies
+            var dependenciesFolderInternal = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync(
+                Guid.NewGuid().ToString().ToUpper(), CreationCollisionOption.OpenIfExists);
+
+            // Copy all driver files to Amethyst's local data folder
+            new DirectoryInfo(Path.Join(Directory.GetParent(Assembly.GetExecutingAssembly().Location)!.FullName,
+                    "Assets", "Resources", "Dependencies"))
+                .CopyToFolder(dependenciesFolderInternal.Path);
+
+            // Update the installation paths
+            dependenciesFolder = dependenciesFolderInternal.Path;
+        }
+
+        // Finally install the packages
+        return InstallFiles(SdkFilesToInstall.Select(x => Path.Join(
+            dependenciesFolder, x)), progress, cancellationToken);
 
         // Apply other related fixes, non-critical
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
