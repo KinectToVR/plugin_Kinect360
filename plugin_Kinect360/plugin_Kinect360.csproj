@@ -12,11 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Amethyst.Plugins.Contract" Version="0.2.23" />
+    <PackageReference Include="Amethyst.Plugins.Contract" Version="0.2.25" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
     <PackageReference Include="System.ComponentModel.Composition.Registration" Version="8.0.0" />
-      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240428000" />
+      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
       <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
   </ItemGroup>
 
