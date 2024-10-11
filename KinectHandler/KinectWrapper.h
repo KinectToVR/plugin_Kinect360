@@ -31,6 +31,7 @@ class KinectWrapper
 
     inline static bool initialized_ = false;
     bool skeleton_tracked_ = false;
+    bool rgb_stream_enabled_ = false;
 
     void updater()
     {
@@ -38,10 +39,35 @@ class KinectWrapper
         while (true)update();
     }
 
-    void updateSkeletalData()
+    void updateSensorData()
     {
-        // Wait for a frame to arrive, give up after >3s of nothing
-        if (kinectSensor && kinectSensor->NuiSkeletonGetNextFrame(3000, &skeletonFrame) >= 0)
+        NUI_IMAGE_FRAME imageFrame{};
+
+        // Wait for a frame to arrive, give up if nothing
+        if (rgb_stream_enabled_ && kinectSensor &&
+            kinectSensor->NuiImageStreamGetNextFrame(kinectRGBStream, 0, &imageFrame) >= 0)
+        {
+            INuiFrameTexture* pTexture = imageFrame.pFrameTexture;
+
+            // Lock the frame data so the Kinect knows not to modify it while we are reading it
+            NUI_LOCKED_RECT lockedRect;
+            pTexture->LockRect(0, &lockedRect, nullptr, 0);
+
+            // Make sure we've received valid data
+            size_in_bytes_last_ = 0;
+            if (lockedRect.Pitch != 0)
+            {
+                ResetBuffer(CameraBufferSize()); // Allocate buffer for image, copy to buffer
+                memcpy_s(color_buffer_, size_in_bytes_, lockedRect.pBits, lockedRect.size);
+                size_in_bytes_last_ = size_in_bytes_; // Backup for the bitmap generator
+            }
+
+            pTexture->UnlockRect(0); // Unlock frame data and proceed
+            kinectSensor->NuiImageStreamReleaseFrame(kinectRGBStream, &imageFrame);
+        }
+
+        // Wait for a frame to arrive, give up if nothing
+        if (kinectSensor && kinectSensor->NuiSkeletonGetNextFrame(0, &skeletonFrame) >= 0)
             for (auto& i : skeletonFrame.SkeletonData)
             {
                 if (NUI_SKELETON_TRACKED == i.eTrackingState)
@@ -62,28 +88,32 @@ class KinectWrapper
             }
     }
 
-	bool initKinect()
-	{
+    bool initKinect()
+    {
         // Register a StatusChanged event
         NuiSetDeviceStatusCallback(&statusCallbackEvent, nullptr);
 
-		// Get a working Kinect Sensor
-		int numSensors = 0;
-		if (NuiGetSensorCount(&numSensors) < 0 || numSensors < 1)
-		{
-			return false;
-		}
-		if (NuiCreateSensorByIndex(0, &kinectSensor) < 0)
-		{
-			return false;
-		}
+        // Get a working Kinect Sensor
+        int numSensors = 0;
+        if (NuiGetSensorCount(&numSensors) < 0 || numSensors < 1)
+        {
+            return false;
+        }
+        if (NuiCreateSensorByIndex(0, &kinectSensor) < 0)
+        {
+            return false;
+        }
 
         // Check the sensor (just in case)
         if (kinectSensor == nullptr) return false;
 
         // Initialize Sensor
-        HRESULT hr = kinectSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
-        kinectSensor->NuiSkeletonTrackingEnable(nullptr, 0); //NUI_SKELETON_TRACKING_FLAG_ENABLE_IN_NEAR_RANGE
+        HRESULT hr = kinectSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_COLOR);
+
+        kinectSensor->NuiImageStreamOpen(NUI_IMAGE_TYPE_COLOR, resolution_,
+                                         0, 2, nullptr, &kinectRGBStream);
+
+        kinectSensor->NuiSkeletonTrackingEnable(nullptr, 0);
 
         return kinectSensor;
     }
@@ -219,7 +249,7 @@ public:
         // Update (only if the sensor is on and its status is ok)
         if (initialized_ && kinectSensor &&
             kinectSensor->NuiStatus() == S_OK)
-            updateSkeletalData();
+            updateSensorData();
     }
 
     int shutdown()
@@ -268,6 +298,11 @@ public:
         return tracking_states_;
     }
 
+    std::tuple<BYTE*, int> color_buffer()
+    {
+        return std::make_tuple(color_buffer_, size_in_bytes_last_);
+    }
+
     bool skeleton_tracked()
     {
         return skeleton_tracked_;
@@ -286,8 +321,91 @@ public:
         return angle;
     }
 
+    void camera_enabled(bool enabled)
+    {
+        rgb_stream_enabled_ = enabled;
+    }
+
+    bool camera_enabled(void)
+    {
+        return rgb_stream_enabled_;
+    }
+
     int KinectJointType(int kinectJointType)
     {
         return KinectJointTypeDictionary.at(static_cast<JointType>(kinectJointType));
+    }
+
+    std::pair<int, int> CameraImageSize()
+    {
+        switch (resolution_)
+        {
+        case NUI_IMAGE_RESOLUTION_1280x960:
+            return std::make_pair(1280, 760);
+        case NUI_IMAGE_RESOLUTION_640x480:
+            return std::make_pair(640, 480);
+        case NUI_IMAGE_RESOLUTION_320x240:
+            return std::make_pair(320, 240);
+        case NUI_IMAGE_RESOLUTION_80x60:
+            return std::make_pair(80, 60);
+        default:
+            return std::make_pair(1280, 760);
+        }
+    }
+
+    unsigned long CameraBufferSize()
+    {
+        const auto& [width,height] = CameraImageSize();
+        return width * height * 4;
+    }
+
+
+    std::pair<int, int> MapCoordinate(const _Vector4& skeletonPoint)
+    {
+        LONG x = 0, y = 0;
+        LONG backupX = x, backupY = y;
+
+        USHORT depthValue = 0;
+        const auto& [width, height] = CameraImageSize();
+        NuiTransformSkeletonToDepthImage(skeletonPoint, &x, &y, &depthValue, resolution_);
+
+        if (FAILED(NuiImageGetColorPixelCoordinatesFromDepthPixelAtResolution(
+            resolution_, resolution_, nullptr,
+            x, y, depthValue, &x, &y)))
+        {
+            x = backupX;
+            y = backupY;
+        }
+
+        // return std::make_pair(1000 * x / width, 1000 * y / width);
+        return std::make_pair(x, y);
+    }
+
+private:
+    DWORD size_in_bytes_ = 0;
+    DWORD size_in_bytes_last_ = 0;
+    BYTE* color_buffer_ = nullptr;
+
+    _NUI_IMAGE_RESOLUTION resolution_ =
+        NUI_IMAGE_RESOLUTION_640x480;
+
+    BYTE* ResetBuffer(UINT size)
+    {
+        if (!color_buffer_ || size_in_bytes_ != size)
+        {
+            if (color_buffer_)
+            {
+                delete[] color_buffer_;
+                color_buffer_ = nullptr;
+            }
+
+            if (0 != size)
+            {
+                color_buffer_ = new BYTE[size];
+            }
+            size_in_bytes_ = size;
+        }
+
+        return color_buffer_;
     }
 };

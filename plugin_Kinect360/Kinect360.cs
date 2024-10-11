@@ -4,11 +4,17 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Amethyst.Plugins.Contract;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Streams;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,6 +39,7 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
     private Page InterfaceRoot { get; set; }
     private NumberBox TiltNumberBox { get; set; }
     private TextBlock TiltTextBlock { get; set; }
+    public WriteableBitmap CameraImage { get; set; }
 
     public bool IsPositionFilterBlockingEnabled => false;
     public bool IsPhysicsOverrideEnabled => false;
@@ -102,12 +109,19 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
             VerticalAlignment = VerticalAlignment.Center
         };
 
+        CameraImage = new WriteableBitmap(CameraImageWidth, CameraImageHeight);
         InterfaceRoot = new Page
         {
             Content = new StackPanel
             {
-                Orientation = Orientation.Horizontal,
-                Children = { TiltTextBlock, TiltNumberBox }
+                Children =
+                {
+                    new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Children = { TiltTextBlock, TiltNumberBox }
+                    }
+                }
             }
         };
 
@@ -154,6 +168,7 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
 
     public void Update()
     {
+        // Update skeletal data
         var trackedJoints = GetTrackedKinectJoints();
         trackedJoints.ForEach(x =>
         {
@@ -162,6 +177,16 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
 
             TrackedJoints[trackedJoints.IndexOf(x)].Position = x.Position.Safe();
             TrackedJoints[trackedJoints.IndexOf(x)].Orientation = x.Orientation.Safe();
+        });
+        
+        // Update camera feed
+        if (!IsCameraEnabled) return;
+        CameraImage.DispatcherQueue.TryEnqueue(async () =>
+        {
+            var buffer = GetImageBuffer(); // Read from Kinect
+            if (buffer is null || buffer.Length <= 0) return;
+            await CameraImage.PixelBuffer.AsStream().WriteAsync(buffer);
+            CameraImage.Invalidate(); // Enqueue for preview refresh
         });
     }
 
@@ -182,9 +207,14 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
         // Request a refresh of the status UI
         Host?.RefreshStatusInterface();
     }
+
+    public Func<BitmapSource> GetCameraImage => () => CameraImage;
+    public Func<bool> GetIsCameraEnabled => () => IsCameraEnabled;
+    public Action<bool> SetIsCameraEnabled => value => IsCameraEnabled = value;
+    public Func<Vector3, Size> MapCoordinateDelegate => MapCoordinate;
 }
 
-internal static class PoseUtils
+internal static class Utils
 {
     public static Quaternion Safe(this Quaternion q)
     {
