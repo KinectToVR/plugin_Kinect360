@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Amethyst.Plugins.Contract">
-      <Version>0.2.25</Version>
+      <Version>0.3.32-alpha</Version>
     </PackageReference>
     <PackageReference Include="System.ComponentModel">
       <Version>4.3.0</Version>

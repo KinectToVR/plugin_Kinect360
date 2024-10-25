@@ -2,8 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -47,6 +49,7 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
     public bool IsFlipSupported => true;
     public bool IsAppOrientationSupported => true;
     public object SettingsInterfaceRoot => InterfaceRoot;
+    private static IAmethystHost HostStatic { get; set; }
 
     public ObservableCollection<TrackedJoint> TrackedJoints { get; } =
         // Prepend all supported joints to the joints list
@@ -54,7 +57,50 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
             .Where(x => x is not TrackedJointType.JointNeck and not TrackedJointType.JointManual and not
                 TrackedJointType.JointHandTipLeft and not TrackedJointType.JointHandTipRight and not
                 TrackedJointType.JointThumbLeft and not TrackedJointType.JointThumbRight)
-            .Select(x => new TrackedJoint { Name = x.ToString(), Role = x }));
+            .Select(x => new TrackedJoint
+            {
+                Name = x.ToString(), Role = x, SupportedInputActions = x switch
+                {
+                    TrackedJointType.JointHandLeft =>
+                    [
+                        new KeyInputAction<bool>
+                        {
+                            Name = "Left Pause", Description = "Left hand pause gesture",
+                            Guid = "5E4680F9-F232-4EA1-AE12-E96F7F8E0CC1", GetHost = () => HostStatic
+                        },
+                        new KeyInputAction<bool>
+                        {
+                            Name = "Left Point", Description = "Left hand point gesture",
+                            Guid = "8D83B89D-5FBD-4D52-B626-4E90BDD26B08", GetHost = () => HostStatic
+                        },
+                        new KeyInputAction<bool>
+                        {
+                            Name = "Left Press", Description = "Left hand press gesture",
+                            Guid = "E383258F-5918-4F1C-BC66-7325DB1F07E8", GetHost = () => HostStatic
+                        }
+                    ],
+                    TrackedJointType.JointHandRight =>
+                    [
+                        new KeyInputAction<bool>
+                        {
+                            Name = "Right Pause", Description = "Right hand pause gesture",
+                            Guid = "B8389FA6-75EF-4509-AEC2-1758AFE41D95", GetHost = () => HostStatic
+                        },
+                        new KeyInputAction<bool>
+                        {
+                            Name = "Right Point", Description = "Right hand point gesture",
+                            Guid = "C58EBCFE-0DF5-40FD-ABC1-06B415FA51BE", GetHost = () => HostStatic
+                        },
+                        new KeyInputAction<bool>
+                        {
+                            Name = "Right Press", Description = "Right hand press gesture",
+                            Guid = "801336BE-5BD5-4881-A390-D57D958592EF", GetHost = () => HostStatic
+                        }
+                    ],
+                    _ => []
+                }
+            })
+        );
 
     public string DeviceStatusString => PluginLoaded
         ? DeviceStatus switch
@@ -82,6 +128,9 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
 
     public void OnLoad()
     {
+        // Backup the plugin host
+        HostStatic = Host;
+
         TiltNumberBox = new NumberBox
         {
             SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Inline,
@@ -109,6 +158,30 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
             VerticalAlignment = VerticalAlignment.Center
         };
 
+        // TODO TEMPORARY
+        var actionButtons = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6, Margin = new Thickness(5) };
+        foreach (var action in TrackedJoints.SelectMany(x => x.SupportedInputActions))
+        {
+            var button = new Button { Content = action.Name };
+            actionButtons.Children.Add(button);
+
+            button.Click += (_, _) =>
+            {
+                try
+                {
+                    if (action.IsUsed) 
+                        //action.Invoke(true);
+                        Host.ReceiveKeyInput(action, true);
+                }
+                catch (Exception ex)
+                {
+                    Host?.Log(ex);
+                    Debugger.Break();
+                }
+            };
+        }
+        // TODO TEMPORARY
+
         CameraImage = new WriteableBitmap(CameraImageWidth, CameraImageHeight);
         InterfaceRoot = new Page
         {
@@ -120,7 +193,10 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
                     {
                         Orientation = Orientation.Horizontal,
                         Children = { TiltTextBlock, TiltNumberBox }
-                    }
+                    },
+                    // TODO TEMPORARY
+                    actionButtons
+                    // TODO TEMPORARY
                 }
             }
         };
@@ -178,7 +254,7 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
             TrackedJoints[trackedJoints.IndexOf(x)].Position = x.Position.Safe();
             TrackedJoints[trackedJoints.IndexOf(x)].Orientation = x.Orientation.Safe();
         });
-        
+
         // Update camera feed
         if (!IsCameraEnabled) return;
         CameraImage.DispatcherQueue.TryEnqueue(async () =>
