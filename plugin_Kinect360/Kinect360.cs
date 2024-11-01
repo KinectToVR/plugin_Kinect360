@@ -49,7 +49,13 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
     public bool IsFlipSupported => true;
     public bool IsAppOrientationSupported => true;
     public object SettingsInterfaceRoot => InterfaceRoot;
-    private static IAmethystHost HostStatic { get; set; }
+    public static IAmethystHost HostStatic { get; set; }
+
+    private readonly GestureDetector
+        _pauseDetectorLeft = new(),
+        _pauseDetectorRight = new(),
+        _pointDetectorLeft = new(),
+        _pointDetectorRight = new();
 
     public ObservableCollection<TrackedJoint> TrackedJoints { get; } =
         // Prepend all supported joints to the joints list
@@ -72,12 +78,12 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
                         {
                             Name = "Left Point", Description = "Left hand point gesture",
                             Guid = "8D83B89D-5FBD-4D52-B626-4E90BDD26B08", GetHost = () => HostStatic
-                        },
-                        new KeyInputAction<bool>
-                        {
-                            Name = "Left Press", Description = "Left hand press gesture",
-                            Guid = "E383258F-5918-4F1C-BC66-7325DB1F07E8", GetHost = () => HostStatic
                         }
+                        //new KeyInputAction<bool>
+                        //{
+                        //    Name = "Left Grab", Description = "Left hand grab gesture",
+                        //    Guid = "E383258F-5918-4F1C-BC66-7325DB1F07E8", GetHost = () => HostStatic
+                        //}
                     ],
                     TrackedJointType.JointHandRight =>
                     [
@@ -90,12 +96,12 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
                         {
                             Name = "Right Point", Description = "Right hand point gesture",
                             Guid = "C58EBCFE-0DF5-40FD-ABC1-06B415FA51BE", GetHost = () => HostStatic
-                        },
-                        new KeyInputAction<bool>
-                        {
-                            Name = "Right Press", Description = "Right hand press gesture",
-                            Guid = "801336BE-5BD5-4881-A390-D57D958592EF", GetHost = () => HostStatic
                         }
+                        //new KeyInputAction<bool>
+                        //{
+                        //    Name = "Right Grab", Description = "Right hand grab gesture",
+                        //    Guid = "801336BE-5BD5-4881-A390-D57D958592EF", GetHost = () => HostStatic
+                        //}
                     ],
                     _ => []
                 }
@@ -158,30 +164,6 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
             VerticalAlignment = VerticalAlignment.Center
         };
 
-        // TODO TEMPORARY
-        var actionButtons = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6, Margin = new Thickness(5) };
-        foreach (var action in TrackedJoints.SelectMany(x => x.SupportedInputActions))
-        {
-            var button = new Button { Content = action.Name };
-            actionButtons.Children.Add(button);
-
-            button.Click += (_, _) =>
-            {
-                try
-                {
-                    if (action.IsUsed) 
-                        //action.Invoke(true);
-                        Host.ReceiveKeyInput(action, true);
-                }
-                catch (Exception ex)
-                {
-                    Host?.Log(ex);
-                    Debugger.Break();
-                }
-            };
-        }
-        // TODO TEMPORARY
-
         CameraImage = new WriteableBitmap(CameraImageWidth, CameraImageHeight);
         InterfaceRoot = new Page
         {
@@ -193,13 +175,25 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
                     {
                         Orientation = Orientation.Horizontal,
                         Children = { TiltTextBlock, TiltNumberBox }
-                    },
-                    // TODO TEMPORARY
-                    actionButtons
-                    // TODO TEMPORARY
+                    }
                 }
             }
         };
+
+        try
+        {
+            // Re-generate joint names
+            lock (Host.UpdateThreadLock)
+            {
+                for (var i = 0; i < TrackedJoints.Count; i++)
+                    TrackedJoints[i] = TrackedJoints[i].WithName(Host?.RequestLocalizedString(
+                        $"/JointsEnum/{TrackedJoints[i].Role.ToString()}") ?? TrackedJoints[i].Role.ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Host?.Log($"Error setting joint names! Message: {e.Message}", LogSeverity.Error);
+        }
 
         PluginLoaded = true; // Mark as already-loaded
     }
@@ -256,14 +250,79 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
         });
 
         // Update camera feed
-        if (!IsCameraEnabled) return;
-        CameraImage.DispatcherQueue.TryEnqueue(async () =>
+        if (IsCameraEnabled)
+            CameraImage.DispatcherQueue.TryEnqueue(async () =>
+            {
+                var buffer = GetImageBuffer(); // Read from Kinect
+                if (buffer is null || buffer.Length <= 0) return;
+                await CameraImage.PixelBuffer.AsStream().WriteAsync(buffer);
+                CameraImage.Invalidate(); // Enqueue for preview refresh
+            });
+
+        // Update gestures
+        if (trackedJoints.Count != 20) return;
+
+        try
         {
-            var buffer = GetImageBuffer(); // Read from Kinect
-            if (buffer is null || buffer.Length <= 0) return;
-            await CameraImage.PixelBuffer.AsStream().WriteAsync(buffer);
-            CameraImage.Invalidate(); // Enqueue for preview refresh
-        });
+            var shoulderLeft = trackedJoints[(int)NativeKinectJoints.JointShoulderLeft].Position;
+            var shoulderRight = trackedJoints[(int)NativeKinectJoints.JointShoulderRight].Position;
+            var elbowLeft = trackedJoints[(int)NativeKinectJoints.JointElbowLeft].Position;
+            var elbowRight = trackedJoints[(int)NativeKinectJoints.JointElbowRight].Position;
+            var handLeft = trackedJoints[(int)NativeKinectJoints.JointWristLeft].Position;
+            var handRight = trackedJoints[(int)NativeKinectJoints.JointWristRight].Position;
+
+            // >0.9f when elbow is not bent and the arm is straight : LEFT
+            var armDotLeft = Vector3.Dot(
+                Vector3.Normalize(elbowLeft - shoulderLeft),
+                Vector3.Normalize(handLeft - elbowLeft));
+
+            // >0.9f when the arm is pointing down : LEFT
+            var armDownDotLeft = Vector3.Dot(
+                new Vector3(0.0f, -1.0f, 0.0f),
+                Vector3.Normalize(handLeft - elbowLeft));
+
+            // >0.4f <0.6f when the arm is slightly tilted sideways : RIGHT
+            var armTiltDotLeft = Vector3.Dot(
+                Vector3.Normalize(shoulderLeft - shoulderRight),
+                Vector3.Normalize(handLeft - elbowLeft));
+
+            // >0.9f when elbow is not bent and the arm is straight : LEFT
+            var armDotRight = Vector3.Dot(
+                Vector3.Normalize(elbowRight - shoulderRight),
+                Vector3.Normalize(handRight - elbowRight));
+
+            // >0.9f when the arm is pointing down : RIGHT
+            var armDownDotRight = Vector3.Dot(
+                new Vector3(0.0f, -1.0f, 0.0f),
+                Vector3.Normalize(handRight - elbowRight));
+
+            // >0.4f <0.6f when the arm is slightly tilted sideways : RIGHT
+            var armTiltDotRight = Vector3.Dot(
+                Vector3.Normalize(shoulderRight - shoulderLeft),
+                Vector3.Normalize(handRight - elbowRight));
+
+            /* Trigger the detected gestures */
+
+            if (TrackedJoints[(int)NativeKinectJoints.JointHandLeft].SupportedInputActions.IsUsed(0, out var pauseActionLeft))
+                Host.ReceiveKeyInput(pauseActionLeft, _pauseDetectorLeft.Update(armDotLeft > 0.9f && armTiltDotLeft is > 0.4f and < 0.7f));
+
+            if (TrackedJoints[(int)NativeKinectJoints.JointHandRight].SupportedInputActions.IsUsed(0, out var pauseActionRight))
+                Host.ReceiveKeyInput(pauseActionRight, _pauseDetectorRight.Update(armDotRight > 0.9f && armTiltDotRight is > 0.4f and < 0.7f));
+
+            if (TrackedJoints[(int)NativeKinectJoints.JointHandLeft].SupportedInputActions.IsUsed(1, out var pointActionLeft))
+                Host.ReceiveKeyInput(pointActionLeft, _pointDetectorLeft
+                    .Update(armDotLeft > 0.9f && armTiltDotLeft is > -0.5f and < 0.5f && armDownDotLeft is > -0.3f and < 0.7f));
+
+            if (TrackedJoints[(int)NativeKinectJoints.JointHandRight].SupportedInputActions.IsUsed(1, out var pointActionRight))
+                Host.ReceiveKeyInput(pointActionRight, _pointDetectorRight
+                    .Update(armDotRight > 0.9f && armTiltDotRight is > -0.5f and < 0.5f && armDownDotRight is > -0.3f and < 0.7f));
+
+            /* Trigger the detected gestures */
+        }
+        catch (Exception ex)
+        {
+            Host?.Log(ex);
+        }
     }
 
     public void SignalJoint(int jointId)
@@ -306,4 +365,75 @@ internal static class Utils
             ? Vector3.Zero // Return a placeholder position vector
             : v; // If everything is fine, return the actual orientation
     }
+
+    public static T At<T>(this SortedSet<T> set, int at)
+    {
+        return set.ElementAt(at);
+    }
+
+    public static bool At<T>(this SortedSet<T> set, int at, out T result)
+    {
+        try
+        {
+            result = set.ElementAt(at);
+        }
+        catch
+        {
+            result = default;
+            return false;
+        }
+
+        return true;
+    }
+
+    public static bool IsUsed(this SortedSet<IKeyInputAction> set, int at)
+    {
+        return set.At(at, out var action) && (Kinect360.HostStatic?.CheckInputActionIsUsed(action) ?? false);
+    }
+
+    public static bool IsUsed(this SortedSet<IKeyInputAction> set, int at, out IKeyInputAction action)
+    {
+        return set.At(at, out action) && (Kinect360.HostStatic?.CheckInputActionIsUsed(action) ?? false);
+    }
+
+    public static TrackedJoint WithName(this TrackedJoint joint, string name)
+    {
+        return new TrackedJoint
+        {
+            Name = name,
+            Role = joint.Role,
+            Acceleration = joint.Acceleration,
+            AngularAcceleration = joint.AngularAcceleration,
+            AngularVelocity = joint.AngularVelocity,
+            Orientation = joint.Orientation,
+            Position = joint.Position,
+            SupportedInputActions = joint.SupportedInputActions,
+            TrackingState = joint.TrackingState,
+            Velocity = joint.Velocity
+        };
+    }
+}
+
+internal enum NativeKinectJoints
+{
+    JointHead,
+    JointSpineShoulder,
+    JointShoulderLeft,
+    JointElbowLeft,
+    JointWristLeft,
+    JointHandLeft,
+    JointShoulderRight,
+    JointElbowRight,
+    JointWristRight,
+    JointHandRight,
+    JointSpineMiddle,
+    JointSpineWaist,
+    JointHipLeft,
+    JointKneeLeft,
+    JointFootLeft,
+    JointFootTipLeft,
+    JointHipRight,
+    JointKneeRight,
+    JointFootRight,
+    JointFootTipRight
 }
