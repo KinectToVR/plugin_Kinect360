@@ -1,0 +1,99 @@
+; kinectaudioarray.inf
+;
+; (c) Copyright 2011-2012 Microsoft
+;
+
+[Version]
+Signature = "$Windows NT$"
+Class=Kinect for Windows
+ClassGuid={3A0339CD-B5F0-421C-8661-F243EEF1528C}
+Provider = %ProviderName%
+; DriverVer is updated by stampinf in the signing process, default must be valid for buddy builds.
+DriverVer=08/27/2012,1.6.0.476
+CatalogFile=kinect.cat
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=kinectClassReg     
+
+[kinectClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,"-24"
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ========== Manufacturer/Models sections ===========
+
+[Manufacturer]
+%ProviderName% = Microsoft_WinUSB,NTx86,NTamd64 
+
+[Microsoft_WinUSB.NTx86]
+%USB\KinectAudioArray.DeviceDesc% =USB_Install, USB\VID_045E&PID_02BB&MI_00
+%USB\KinectAudioArray.DeviceDesc% =USB_Install, USB\VID_045E&PID_02C3&MI_00
+
+[Microsoft_WinUSB.NTamd64]
+%USB\KinectAudioArray.DeviceDesc% =USB_Install, USB\VID_045E&PID_02BB&MI_00
+%USB\KinectAudioArray.DeviceDesc% =USB_Install, USB\VID_045E&PID_02C3&MI_00
+
+; =================== Installation ===================
+
+[USB_Install]
+Include=winusb.inf
+Needs=WINUSB.NT
+
+[USB_Install.Services]
+Include=winusb.inf
+AddService = WinUSB,0x00000002,WinUSB_ServiceInstall
+
+[WinUSB_ServiceInstall]
+DisplayName     = %WinUSB_SvcDesc%
+ServiceType     = 1
+StartType       = 3
+ErrorControl    = 1
+ServiceBinary   = %12%\WinUSB.sys
+
+[USB_Install.Wdf]
+KmdfService=WINUSB, WinUsb_Install
+
+[WinUSB_Install]
+KmdfLibraryVersion=1.9
+
+[USB_Install.HW]
+AddReg=Dev_AddReg
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{F9DBE212-F689-4fdf-A75D-532E951FBD0A}"
+
+[USB_Install.CoInstallers]
+AddReg=CoInstallers_AddReg
+CopyFiles=CoInstallers_CopyFiles
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WinUSBCoInstaller.dll","WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[CoInstallers_CopyFiles]
+WinUSBCoInstaller.dll
+WdfCoInstaller01009.dll
+
+[DestinationDirs]
+CoInstallers_CopyFiles=11
+
+; ================= Source Media Section =====================
+
+[SourceDisksNames]
+1 = %Disk_Description%,,,
+
+[SourceDisksFiles]
+WinUSBCoInstaller.dll=1
+WdfCoInstaller01009.dll=1
+
+; =================== Strings ===================
+
+[Strings]
+ProviderName            = "Microsoft"
+ClassName               = "Kinect for Windows"
+Disk_Description        = "Kinect for Windows Audio Array Control Installation Disk"
+WinUSB_SvcDesc          = "Kinect for Windows Audio Array Control Driver"
+USB\KinectAudioArray.DeviceDesc = "Kinect for Windows Audio Array Control"

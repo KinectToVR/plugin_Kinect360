@@ -94,6 +94,14 @@
             "translation": "Kinect for Xbox 360 Toolkit"
         },
         {
+            "id": "/Plugins/Kinect360/Fixes/NotPowered/Name",
+            "translation": "Not Powered"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Name",
+            "translation": "Not Ready"
+        },
+        {
             "id": "/JointsEnum/JointHead",
             "translation": "Head"
         },
@@ -228,6 +236,82 @@
         {
             "id": "/InputActions/Descriptions/PointRight",
             "translation": "Right hand point gesture"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/CheckingMemoryIntegrity",
+            "translation": "Checking if Memory Integrity is enabled..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/MemoryIntegrityEnabled",
+            "translation": "Memory Integrity detected! Please disable it, restart Windows, and try again."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/CheckingKinectMicrophone",
+            "translation": "Verifying that the Kinect microphone is on..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/KinectV1MicrophoneFound",
+            "translation": "Xbox 360 Kinect microphone found!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/KinectMicrophoneDisabled",
+            "translation": "The Kinect microphone is disabled! The Kinect for Windows SDK will not function properly. Please enable the microphone..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallingDrivers",
+            "translation": "Installing Kinect for Windows drivers..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallDeviceDriver",
+            "translation": "Installing Kinect for Windows Device..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallDeviceDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Device!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioDriver",
+            "translation": "Installing Kinect for Windows Audio Control..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Audio Control!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriver",
+            "translation": "Installing Kinect for Windows Audio Array Control..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Audio Array Control!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriver",
+            "translation": "Installing Kinect for Windows Camera..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Camera!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriver",
+            "translation": "Installing Kinect for Windows Security Controller..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Security Controller!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/AssignMicrophoneDriver",
+            "translation": "Assigning driver \"(Generic USB Audio)\" for Kinect USB Audio!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/AssignMicrophoneDriverSuccess",
+            "translation": "Successfully assigned driver \"(Generic USB Audio)\" to Kinect USB Audio!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Prompt/MustDisableMemoryIntegrity",
+            "translation": "Memory Integrity Detected!\n\nThe Kinect for Windows drivers do not support Memory Integrity. Please disable Memory Integrity to be able to use your Kinect."
         }
     ]
 }

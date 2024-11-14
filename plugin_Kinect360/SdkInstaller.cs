@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Shapes;
+using plugin_Kinect360.Fixes;
 using Path = System.IO.Path;
 
 namespace plugin_Kinect360;
@@ -37,39 +38,45 @@ internal class SdkInstaller : IDependencyInstaller
 
 	public List<IDependency> ListDependencies()
 	{
-		return new List<IDependency>
-		{
-			new KinectSdk
-			{
-				Host = Host,
-				Name = Host?.RequestLocalizedString("/Plugins/Kinect360/Dependencies/Runtime/Name") ??
-				       "Kinect for Xbox 360 SDK"
-			}
-		};
+		return
+        [
+            new KinectSdk
+            {
+                Host = Host,
+                Name = Host?.RequestLocalizedString("/Plugins/Kinect360/Dependencies/Runtime/Name") ??
+                       "Kinect for Xbox 360 SDK"
+            }
+        ];
 	}
 
 	public List<IFix> ListFixes()
 	{
-		return new List<IFix>
-		{
-			new NotPoweredFix
-			{
-				Host = Host,
-				Name = "Not Powered" // Without the "fix" part
-				// Host?.RequestLocalizedString("/Plugins/Kinect360/Dependencies/Runtime/Name") ?? "Kinect for Xbox 360 SDK"
-			}
-		};
+		return
+        [
+            new NotPoweredFix
+            {
+                Host = Host,
+                Name = Host?.RequestLocalizedString( // Without the "fix" part
+                    "/Plugins/Kinect360/Fixes/NotPowered/Name") ?? "Not Powered" 
+            },
+            new NotReadyFix
+            {
+                Host = Host,
+                Name = Host?.RequestLocalizedString( // Without the "fix" part
+                    "/Plugins/Kinect360/Fixes/NotReady/Name") ?? "Not Ready" 
+            },
+        ];
 	}
 }
 
 internal class KinectSdk : IDependency
 {
-	private List<string> SdkFilesToInstall { get; } = new()
-	{
-		"KinectDrivers-v1.8-x64.WHQL.msi",
-		"KinectRuntime-v1.8-x64.msi",
-		"KinectSDK-v1.8-x64.msi"
-	};
+	private List<string> SdkFilesToInstall { get; } =
+    [
+        "KinectDrivers-v1.8-x64.WHQL.msi",
+        "KinectRuntime-v1.8-x64.msi",
+        "KinectSDK-v1.8-x64.msi"
+    ];
 
 	public IDependencyInstaller.ILocalizationHost Host { get; set; }
 
@@ -190,24 +197,6 @@ internal class KinectSdk : IDependency
 
 				return false;
 			}
-
-		return true;
-	}
-}
-
-internal class NotPoweredFix : IFix
-{
-	public IDependencyInstaller.ILocalizationHost Host { get; set; }
-	public string Name { get; set; } // Set in ListFixes()
-
-	public bool IsMandatory => false; // Runtime check (set both to 1 to auto-apply during setup)
-	public bool IsNecessary => false; // Runtime check (set both to 1 to auto-apply during setup)
-	public string InstallerEula => string.Empty; // Don't show, check the KinectSdk's for reference
-
-	public async Task<bool> Apply(IProgress<InstallationProgress> progress, CancellationToken cancellationToken, object arg = null)
-	{
-		if (!string.IsNullOrEmpty(arg as string))
-			throw new Exception($"{Name} fix failed due to \"{(string)arg}\"");
 
 		return true;
 	}

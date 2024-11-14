@@ -6,7 +6,7 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <RootNamespace>plugin_Kinect360</RootNamespace>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
-    <PublishTrimmed>true</PublishTrimmed>
+    <PublishTrimmed>false</PublishTrimmed>
     <Platforms>x64</Platforms>
     <UseWinUI>true</UseWinUI>
     <LangVersion>latest</LangVersion>
@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Amethyst.Plugins.Contract" Version="0.3.32-alpha" />
+    <PackageReference Include="NAudio.Sdl2" Version="2.2.5" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
     <PackageReference Include="System.ComponentModel.Composition.Registration" Version="8.0.0" />

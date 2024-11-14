@@ -1,0 +1,100 @@
+; kinectcamera.inf
+;
+; (c) Copyright 2011-2012 Microsoft
+; 
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Kinect for Windows
+ClassGuid={3A0339CD-B5F0-421C-8661-F243EEF1528C}
+Provider=%ProviderName%
+DriverVer=08/27/2012,1.6.0.476
+CatalogFile=kinect.cat
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=kinectClassReg     
+
+[kinectClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,"-24"
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Device section =====================
+
+[Manufacturer]
+%ProviderName%=Microsoft,NTx86,NTamd64 
+
+[Microsoft.NTx86]
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02AE&MI_00
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02AE
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02BF&MI_00
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02BF
+
+[Microsoft.NTamd64]
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02AE&MI_00
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02AE
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02BF&MI_00
+%USB\KinectCamera.DeviceDesc%=kinect.Dev, USB\VID_045E&PID_02BF
+
+[kinect.Dev.NT]
+CopyFiles=kinect.Files.Ext
+
+[kinect.Dev.NT.Services]
+Addservice = KinectCamera, 0x00000002, kinect.AddService
+
+[kinect.AddService]
+DisplayName    = %kinect.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\kinectcamera.sys
+AddReg         = kinect.AddReg
+LoadOrderGroup = Base
+
+[kinect.AddReg]
+HKR,"Parameters","MaximumTransferSize",0x10001,65536
+
+[kinect.Files.Ext]
+kinectcamera.sys
+
+[SourceDisksNames]
+1=%Disk_Description%,,,
+
+[SourceDisksFiles]
+kinectcamera.sys = 1
+
+;-------------- WDF Coinstaller installation
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+
+[kinect.Dev.NT.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+WdfCoInstaller01009.dll
+
+[SourceDisksFiles]
+WdfCoInstaller01009.dll=1 ; make sure the number matches with SourceDisksNames
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[kinect.Dev.NT.Wdf]
+KmdfService = KinectCamera, kinect_wdfsect
+
+[kinect_wdfsect]
+KmdfLibraryVersion = 1.9
+
+;---------------------------------------------------------------;
+
+[Strings]
+ProviderName                     = "Microsoft"
+ClassName                        = "Kinect for Windows"
+Disk_Description                 = "Kinect for Windows Camera Installation Disk"
+kinect.SvcDesc                   = "Kinect for Windows Camera Driver"
+USB\KinectCamera.DeviceDesc = "Kinect for Windows Camera"
