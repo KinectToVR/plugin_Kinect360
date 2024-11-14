@@ -10,11 +10,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Amethyst.Plugins.Contract;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
 
@@ -72,36 +74,26 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
                         new KeyInputAction<bool>
                         {
                             Name = "Left Pause", Description = "Left hand pause gesture",
-                            Guid = "5E4680F9-F232-4EA1-AE12-E96F7F8E0CC1", GetHost = () => HostStatic
+                            Guid = "PauseLeft_360", GetHost = () => HostStatic
                         },
                         new KeyInputAction<bool>
                         {
                             Name = "Left Point", Description = "Left hand point gesture",
-                            Guid = "8D83B89D-5FBD-4D52-B626-4E90BDD26B08", GetHost = () => HostStatic
+                            Guid = "PointLeft_360", GetHost = () => HostStatic
                         }
-                        //new KeyInputAction<bool>
-                        //{
-                        //    Name = "Left Grab", Description = "Left hand grab gesture",
-                        //    Guid = "E383258F-5918-4F1C-BC66-7325DB1F07E8", GetHost = () => HostStatic
-                        //}
                     ],
                     TrackedJointType.JointHandRight =>
                     [
                         new KeyInputAction<bool>
                         {
                             Name = "Right Pause", Description = "Right hand pause gesture",
-                            Guid = "B8389FA6-75EF-4509-AEC2-1758AFE41D95", GetHost = () => HostStatic
+                            Guid = "PauseRight_360", GetHost = () => HostStatic
                         },
                         new KeyInputAction<bool>
                         {
                             Name = "Right Point", Description = "Right hand point gesture",
-                            Guid = "C58EBCFE-0DF5-40FD-ABC1-06B415FA51BE", GetHost = () => HostStatic
+                            Guid = "PointRight_360", GetHost = () => HostStatic
                         }
-                        //new KeyInputAction<bool>
-                        //{
-                        //    Name = "Right Grab", Description = "Right hand grab gesture",
-                        //    Guid = "801336BE-5BD5-4881-A390-D57D958592EF", GetHost = () => HostStatic
-                        //}
                     ],
                     _ => []
                 }
@@ -186,8 +178,24 @@ public class Kinect360 : KinectHandler.KinectHandler, ITrackingDevice
             lock (Host.UpdateThreadLock)
             {
                 for (var i = 0; i < TrackedJoints.Count; i++)
+                {
                     TrackedJoints[i] = TrackedJoints[i].WithName(Host?.RequestLocalizedString(
                         $"/JointsEnum/{TrackedJoints[i].Role.ToString()}") ?? TrackedJoints[i].Role.ToString());
+
+                    foreach (var action in TrackedJoints[i].SupportedInputActions)
+                    {
+                        action.Name = Host!.RequestLocalizedString($"/InputActions/Names/{action.Guid.Replace("_360", "")}");
+                        action.Description = Host.RequestLocalizedString($"/InputActions/Descriptions/{action.Guid.Replace("_360", "")}");
+
+                        action.Image = new Image
+                        {
+                            Source = new BitmapImage(new Uri($"ms-appx:///{Path.Join(
+                                Directory.GetParent(Assembly.GetExecutingAssembly().Location)!.FullName,
+                                "Assets", "Resources", "Icons", $"{(((dynamic)Host).IsDarkMode as bool? ?? false ? "D" : "W")}" +
+                                                                $"_{action.Guid.Replace("_360", "")}.png")}"))
+                        };
+                    }
+                }
             }
         }
         catch (Exception e)

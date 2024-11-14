@@ -1,97 +1,233 @@
 {
   "language": "es",
-  "messages": [
-    {
-      "id": "/Plugins/Kinect360/Statuses/Success",
-      "translation": "¡Listo!\nS_OK\n¡Todo correcto!"
-    },
-    {
-      "id": "/Plugins/Kinect360/Statuses/Initializing",
-      "translation": "INITIALIZING\nS_NUI_INITIALIZING\nEl dispositivo está conectado e iniciandose..."
-    },
-    {
-      "id": "/Plugins/Kinect360/Statuses/NotConnected",
-      "translation": "NOTCONNECTED\nE_NUI_NOTCONNECTED\nEl dispositivo no está conectado."
-    },
-    {
-      "id": "/Plugins/Kinect360/Statuses/NotGenuine",
-      "translation": "NOTGENUINE\nE_NUI_NOTGENUINE\nEl SDK está marcando el Kinect como invalido."
-    },
-    {
-      "id": "/Plugins/Kinect360/Statuses/NotSupported",
-      "translation": "NOTSUPPORTED\nE_NUI_NOTSUPPORTED\nEl dispositivo no está disponible. (Xbox Kinect necesita tener intalado el SDK)"
-    },
-    {
-      "id": "/Plugins/Kinect360/Statuses/InsufficientBandwidth",
-      "translation": "INSUFFICIENTBANDWIDTH\nE_NUI_INSUFFICIENTBANDWIDTH\nEl dispositivo está conectado a un adaptador o puerto USB que no tiene suficiente ancho de banda para los datos."
-    },
-    {
-      "id": "/Plugins/Kinect360/Statuses/NotPowered",
-      "translation": "NOTPOWERED\nE_NUI_NOTPOWERED\nComprueba que la conexión de tus cables sea correcta. También es posible que el driver de Kinect no esté instalado y registrado en Windows."
-    },
-    {
-      "id": "/Plugins/Kinect360/Statuses/NotReady",
-      "translation": "NOTREADY\nE_NUI_NOTREADY\nHa ocurrido un error inesperado."
-    },
-    {
-      "id": "/Plugins/Kinect360/Settings/Labels/Angle",
-      "translation": "Ángulo de inclinación del Kinect:"
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Downloading/WiX",
-      "translation": "Downloading WiX Toolset..."
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Extraction",
-      "translation": "Toolset extraction failed! Exception: {0}"
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Installation",
-      "translation": "Toolset installation failed! Exception: {0}"
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Downloading/Runtime",
-      "translation": "Downloading Kinect for Xbox 360 Runtime..."
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Exceptions/Runtime/Installation",
-      "translation": "Runtime installation failed! Exception: {0}"
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Downloading/Toolkit",
-      "translation": "Downloading Kinect for Xbox 360 Toolkit..."
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Exceptions/Toolkit/Installation",
-      "translation": "Toolkit installation failed! Exception: {0}"
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Unpacking",
-      "translation": "Unpacking {0}..."
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Installing",
-      "translation": "Installing {0}..."
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Exceptions/Other",
-      "translation": "Exception: {0}"
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Dark/Error/Timeout",
-      "translation": "Failed to execute dark.exe in the allocated time!"
-    },
-    {
-      "id": "/Plugins/Kinect360/Stages/Dark/Error/Result",
-      "translation": "Dark.exe exited with error code: {0}"
-    },
-    {
-      "id": "/Plugins/Kinect360/Dependencies/Runtime/Name",
-      "translation": "Kinect for Xbox 360 Runtime"
-    },
-    {
-      "id": "/Plugins/Kinect360/Dependencies/Toolkit/Name",
-      "translation": "Kinect for Xbox 360 Toolkit"
-    }
-  ]
+    "messages": [
+        {
+            "id": "/Plugins/Kinect360/Statuses/Success",
+            "translation": "¡Listo!\nS_OK\n¡Todo correcto!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Statuses/Initializing",
+            "translation": "INITIALIZING\nS_NUI_INITIALIZING\nEl dispositivo está conectado e iniciandose..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Statuses/NotConnected",
+            "translation": "NOTCONNECTED\nE_NUI_NOTCONNECTED\nEl dispositivo no está conectado."
+        },
+        {
+            "id": "/Plugins/Kinect360/Statuses/NotGenuine",
+            "translation": "NOTGENUINE\nE_NUI_NOTGENUINE\nEl SDK está marcando el Kinect como invalido."
+        },
+        {
+            "id": "/Plugins/Kinect360/Statuses/NotSupported",
+            "translation": "NOTSUPPORTED\nE_NUI_NOTSUPPORTED\nEl dispositivo no está disponible. (Xbox Kinect necesita tener intalado el SDK)"
+        },
+        {
+            "id": "/Plugins/Kinect360/Statuses/InsufficientBandwidth",
+            "translation": "INSUFFICIENTBANDWIDTH\nE_NUI_INSUFFICIENTBANDWIDTH\nEl dispositivo está conectado a un adaptador o puerto USB que no tiene suficiente ancho de banda para los datos."
+        },
+        {
+            "id": "/Plugins/Kinect360/Statuses/NotPowered",
+            "translation": "NOTPOWERED\nE_NUI_NOTPOWERED\nComprueba que la conexión de tus cables sea correcta. También es posible que el driver de Kinect no esté instalado y registrado en Windows."
+        },
+        {
+            "id": "/Plugins/Kinect360/Statuses/NotReady",
+            "translation": "NOTREADY\nE_NUI_NOTREADY\nHa ocurrido un error inesperado."
+        },
+        {
+            "id": "/Plugins/Kinect360/Settings/Labels/Angle",
+            "translation": "Ángulo de inclinación del Kinect:"
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Downloading/WiX",
+            "translation": "Downloading WiX Toolset..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Extraction",
+            "translation": "Toolset extraction failed! Exception: {0}"
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Installation",
+            "translation": "Toolset installation failed! Exception: {0}"
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Downloading/Runtime",
+            "translation": "Downloading Kinect for Xbox 360 Runtime..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Exceptions/Runtime/Installation",
+            "translation": "Runtime installation failed! Exception: {0}"
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Downloading/Toolkit",
+            "translation": "Downloading Kinect for Xbox 360 Toolkit..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Exceptions/Toolkit/Installation",
+            "translation": "Toolkit installation failed! Exception: {0}"
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Unpacking",
+            "translation": "Unpacking {0}..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Installing",
+            "translation": "Installing {0}..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Exceptions/Other",
+            "translation": "Exception: {0}"
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Dark/Error/Timeout",
+            "translation": "Failed to execute dark.exe in the allocated time!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Stages/Dark/Error/Result",
+            "translation": "Dark.exe exited with error code: {0}"
+        },
+        {
+            "id": "/Plugins/Kinect360/Dependencies/Runtime/Name",
+            "translation": "Kinect for Xbox 360 Runtime"
+        },
+        {
+            "id": "/Plugins/Kinect360/Dependencies/Toolkit/Name",
+            "translation": "Kinect for Xbox 360 Toolkit"
+        },
+        {
+            "id": "/JointsEnum/JointHead",
+            "translation": "Cabeza"
+        },
+        {
+            "id": "/JointsEnum/JointNeck",
+            "translation": "Cuello"
+        },
+        {
+            "id": "/JointsEnum/JointSpineShoulder",
+            "translation": "Espina (Hombros)"
+        },
+        {
+            "id": "/JointsEnum/JointShoulderLeft",
+            "translation": "Hombro Izquierdo"
+        },
+        {
+            "id": "/JointsEnum/JointElbowLeft",
+            "translation": "Codo Izquierdo"
+        },
+        {
+            "id": "/JointsEnum/JointWristLeft",
+            "translation": "Muñeca Izquierda"
+        },
+        {
+            "id": "/JointsEnum/JointHandLeft",
+            "translation": "Mano Izquierda"
+        },
+        {
+            "id": "/JointsEnum/JointHandTipLeft",
+            "translation": "Punta de la Mano Izquierda"
+        },
+        {
+            "id": "/JointsEnum/JointThumbLeft",
+            "translation": "Pulgar Izquierdo"
+        },
+        {
+            "id": "/JointsEnum/JointShoulderRight",
+            "translation": "Hombro Derecho"
+        },
+        {
+            "id": "/JointsEnum/JointElbowRight",
+            "translation": "Codo Derecho"
+        },
+        {
+            "id": "/JointsEnum/JointWristRight",
+            "translation": "Muñeca Derecha"
+        },
+        {
+            "id": "/JointsEnum/JointHandRight",
+            "translation": "Mano Derecha"
+        },
+        {
+            "id": "/JointsEnum/JointHandTipRight",
+            "translation": "Punta de la Mano Derecha"
+        },
+        {
+            "id": "/JointsEnum/JointThumbRight",
+            "translation": "Pulgar Derecho"
+        },
+        {
+            "id": "/JointsEnum/JointSpineMiddle",
+            "translation": "Espina (Medio)"
+        },
+        {
+            "id": "/JointsEnum/JointSpineWaist",
+            "translation": "Cintura"
+        },
+        {
+            "id": "/JointsEnum/JointHipLeft",
+            "translation": "Cadera Izquierda"
+        },
+        {
+            "id": "/JointsEnum/JointKneeLeft",
+            "translation": "Rodilla Izquierda"
+        },
+        {
+            "id": "/JointsEnum/JointFootLeft",
+            "translation": "Pie Izquierdo"
+        },
+        {
+            "id": "/JointsEnum/JointFootTipLeft",
+            "translation": "Punta del Pie Izquierdo"
+        },
+        {
+            "id": "/JointsEnum/JointHipRight",
+            "translation": "Cadera Derecha"
+        },
+        {
+            "id": "/JointsEnum/JointKneeRight",
+            "translation": "Rodilla Derecha"
+        },
+        {
+            "id": "/JointsEnum/JointFootRight",
+            "translation": "Pie Derecho"
+        },
+        {
+            "id": "/JointsEnum/JointFootTipRight",
+            "translation": "Punta del Pie Derecho"
+        },
+        {
+            "id": "/JointsEnum/JointManual",
+            "translation": "Manual"
+        },
+        {
+            "id": "/InputActions/Names/PauseLeft",
+            "translation": "Pausa Izquierda"
+        },
+        {
+            "id": "/InputActions/Names/PointLeft",
+            "translation": "Punto Izquierdo"
+        },
+        {
+            "id": "/InputActions/Names/PauseRight",
+            "translation": "Pausa Derecha"
+        },
+        {
+            "id": "/InputActions/Names/PointRight",
+            "translation": "Punto Derecho"
+        },
+        {
+            "id": "/InputActions/Descriptions/PauseLeft",
+            "translation": "Gesto de pausa con la mano izquierda"
+        },
+        {
+            "id": "/InputActions/Descriptions/PointLeft",
+            "translation": "Gesto de señalar con la mano izquierda"
+        },
+        {
+            "id": "/InputActions/Descriptions/PauseRight",
+            "translation": "Gesto de pausa con la mano derecha"
+        },
+        {
+            "id": "/InputActions/Descriptions/PointRight",
+            "translation": "Gesto de señalar con la mano derecha"
+        }
+    ]
 }

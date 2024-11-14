@@ -196,6 +196,38 @@
         {
             "id": "/JointsEnum/JointManual",
             "translation": "Manual"
+        },
+        {
+            "id": "/InputActions/Names/PauseLeft",
+            "translation": "Left Pause"
+        },
+        {
+            "id": "/InputActions/Names/PointLeft",
+            "translation": "Left Point"
+        },
+        {
+            "id": "/InputActions/Names/PauseRight",
+            "translation": "Right Pause"
+        },
+        {
+            "id": "/InputActions/Names/PointRight",
+            "translation": "Right Point"
+        },
+        {
+            "id": "/InputActions/Descriptions/PauseLeft",
+            "translation": "Left hand pause gesture"
+        },
+        {
+            "id": "/InputActions/Descriptions/PointLeft",
+            "translation": "Left hand point gesture"
+        },
+        {
+            "id": "/InputActions/Descriptions/PauseRight",
+            "translation": "Right hand pause gesture"
+        },
+        {
+            "id": "/InputActions/Descriptions/PointRight",
+            "translation": "Right hand point gesture"
         }
     ]
 }
