@@ -166,105 +166,88 @@ internal class NotReadyFix : IFix
             Assembly.GetExecutingAssembly().Location)!.FullName, "Assets", "Resources", "Dependencies", "Drivers");
 
         var driverTemp = (await ApplicationData.Current.TemporaryFolder.CreateFolderAsync(
-            Guid.NewGuid().ToString().ToUpper(), CreationCollisionOption.OpenIfExists)).Path;
+            "Drivers", CreationCollisionOption.OpenIfExists)).Path;
+
+        try
+        {
+            Directory.Delete(driverTemp, true);
+        }
+        catch (Exception ex)
+        {
+            Host.Log(ex);
+        }
 
         Directory.CreateDirectory(driverTemp);
 
         // Device Driver
         {
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Device_cat"), Path.Combine(driverTemp, "kinect.cat"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Device_inf"), Path.Combine(driverTemp, "kinectdevice.inf"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Device_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Device_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Device_cat"), Path.Combine(driverTemp, "kinect.cat"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Device_inf"), Path.Combine(driverTemp, "kinectdevice.inf"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Device_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Device_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
 
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallDeviceDriver") });
             AssignDriverToDeviceId("USB\\VID_045E&PID_02B0&REV_0107", Path.Combine(driverTemp, "kinectdevice.inf"), Host);
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallDeviceDriverSuccess") });
-
-            File.Move(Path.Combine(driverTemp, "kinect.cat"), Path.Combine(pathToDriversDirectory, "Driver_Device_cat"));
-            File.Move(Path.Combine(driverTemp, "kinectdevice.inf"), Path.Combine(pathToDriversDirectory, "Driver_Device_inf"));
-            File.Move(Path.Combine(driverTemp, "WdfCoInstaller01009.dll"), Path.Combine(pathToDriversDirectory, "Driver_Device_WdfCo"));
-            File.Move(Path.Combine(driverTemp, "WinUSBCoInstaller.dll"), Path.Combine(pathToDriversDirectory, "Driver_Device_WinUsbCo"));
         }
 
         // Audio Driver
         {
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Audio_cat"), Path.Combine(driverTemp, "kinect.cat"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Audio_inf"), Path.Combine(driverTemp, "kinectaudio.inf"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Audio_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Audio_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Audio_cat"), Path.Combine(driverTemp, "kinect.cat"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Audio_inf"), Path.Combine(driverTemp, "kinectaudio.inf"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Audio_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Audio_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
 
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioDriver") });
             SetupApi.InstallDriverFromInf(Path.Combine(driverTemp, "kinectaudio.inf"));
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioDriverSuccess") });
-
-            File.Move(Path.Combine(driverTemp, "kinect.cat"), Path.Combine(pathToDriversDirectory, "Driver_Audio_cat"));
-            File.Move(Path.Combine(driverTemp, "kinectaudio.inf"), Path.Combine(pathToDriversDirectory, "Driver_Audio_inf"));
-            File.Move(Path.Combine(driverTemp, "WdfCoInstaller01009.dll"), Path.Combine(pathToDriversDirectory, "Driver_Audio_WdfCo"));
-            File.Move(Path.Combine(driverTemp, "WinUSBCoInstaller.dll"), Path.Combine(pathToDriversDirectory, "Driver_Audio_WinUsbCo"));
         }
 
         // Audio Array Driver
         {
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_cat"), Path.Combine(driverTemp, "kinect.cat"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_inf"), Path.Combine(driverTemp, "kinectaudioarray.inf"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_cat"), Path.Combine(driverTemp, "kinect.cat"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_inf"), Path.Combine(driverTemp, "kinectaudioarray.inf"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_AudioArray_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
 
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriver") });
             AssignDriverToDeviceId("USB\\VID_045E&PID_02BB&REV_0100&MI_00", Path.Combine(driverTemp, "kinectaudioarray.inf"), Host);
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriverSuccess") });
-
-            File.Move(Path.Combine(driverTemp, "kinect.cat"), Path.Combine(pathToDriversDirectory, "Driver_AudioArray_cat"));
-            File.Move(Path.Combine(driverTemp, "kinectaudioarray.inf"), Path.Combine(pathToDriversDirectory, "Driver_AudioArray_inf"));
-            File.Move(Path.Combine(driverTemp, "WdfCoInstaller01009.dll"), Path.Combine(pathToDriversDirectory, "Driver_AudioArray_WdfCo"));
-            File.Move(Path.Combine(driverTemp, "WinUSBCoInstaller.dll"), Path.Combine(pathToDriversDirectory, "Driver_AudioArray_WinUsbCo"));
         }
 
         // Camera Driver
         {
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Camera_cat"), Path.Combine(driverTemp, "kinect.cat"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Camera_inf"), Path.Combine(driverTemp, "kinectcamera.inf"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Camera_sys"), Path.Combine(driverTemp, "kinectcamera.sys"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Camera_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Camera_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Camera_cat"), Path.Combine(driverTemp, "kinect.cat"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Camera_inf"), Path.Combine(driverTemp, "kinectcamera.inf"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Camera_sys"), Path.Combine(driverTemp, "kinectcamera.sys"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Camera_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Camera_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
 
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriver") });
             AssignDriverToDeviceId("USB\\VID_045E&PID_02AE&REV_010;", Path.Combine(driverTemp, "kinectcamera.inf"), Host);
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriverSuccess") });
-
-            File.Move(Path.Combine(driverTemp, "kinect.cat"), Path.Combine(pathToDriversDirectory, "Driver_Camera_cat"));
-            File.Move(Path.Combine(driverTemp, "kinectcamera.inf"), Path.Combine(pathToDriversDirectory, "Driver_Camera_inf"));
-            File.Move(Path.Combine(driverTemp, "kinectcamera.sys"), Path.Combine(pathToDriversDirectory, "Driver_Camera_sys"));
-            File.Move(Path.Combine(driverTemp, "WdfCoInstaller01009.dll"), Path.Combine(pathToDriversDirectory, "Driver_Camera_WdfCo"));
-            File.Move(Path.Combine(driverTemp, "WinUSBCoInstaller.dll"), Path.Combine(pathToDriversDirectory, "Driver_Camera_WinUsbCo"));
         }
 
         // Security Driver
         {
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Security_cat"), Path.Combine(driverTemp, "kinect.cat"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Security_inf"), Path.Combine(driverTemp, "kinectsecurity.inf"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Security_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
-            File.Move(Path.Combine(pathToDriversDirectory, "Driver_Security_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Security_cat"), Path.Combine(driverTemp, "kinect.cat"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Security_inf"), Path.Combine(driverTemp, "kinectsecurity.inf"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Security_WdfCo"), Path.Combine(driverTemp, "WdfCoInstaller01009.dll"));
+            File.Copy(Path.Combine(pathToDriversDirectory, "Driver_Security_WinUsbCo"), Path.Combine(driverTemp, "WinUSBCoInstaller.dll"));
 
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriver") });
             AssignDriverToDeviceId("USB\\VID_045E&PID_02BB&REV_0100&MI_01", Path.Combine(driverTemp, "kinectsecurity.inf"), Host);
             progress.Report(new InstallationProgress
                 { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriverSuccess") });
-
-            File.Move(Path.Combine(driverTemp, "kinect.cat"), Path.Combine(pathToDriversDirectory, "Driver_Security_cat"));
-            File.Move(Path.Combine(driverTemp, "kinectsecurity.inf"), Path.Combine(pathToDriversDirectory, "Driver_Security_inf"));
-            File.Move(Path.Combine(driverTemp, "WdfCoInstaller01009.dll"), Path.Combine(pathToDriversDirectory, "Driver_Security_WdfCo"));
-            File.Move(Path.Combine(driverTemp, "WinUSBCoInstaller.dll"), Path.Combine(pathToDriversDirectory, "Driver_Security_WinUsbCo"));
         }
 
         // Microphone driver
