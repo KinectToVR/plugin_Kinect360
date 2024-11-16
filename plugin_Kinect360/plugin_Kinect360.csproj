@@ -13,11 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Amethyst.Plugins.Contract" Version="0.3.32-alpha" />
-    <PackageReference Include="NAudio.Sdl2" Version="2.2.5" />
+    <PackageReference Include="Amethyst.Plugins.Contract" Version="0.3.33" />
+    <PackageReference Include="NAudio.Sdl2" Version="2.2.6" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
-    <PackageReference Include="System.ComponentModel.Composition.Registration" Version="8.0.0" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0" />
+    <PackageReference Include="System.ComponentModel.Composition.Registration" Version="9.0.0" />
       <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
       <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
   </ItemGroup>
