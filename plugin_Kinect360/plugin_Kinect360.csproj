@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Amethyst.Plugins.Contract" Version="0.3.33" />
+    <PackageReference Include="Amethyst.Plugins.Contract" Version="0.3.35" />
     <PackageReference Include="NAudio.Sdl2" Version="2.2.6" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0" />

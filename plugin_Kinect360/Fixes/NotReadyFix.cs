@@ -162,10 +162,12 @@ internal class NotReadyFix : IFix
         progress.Report(new InstallationProgress
             { IsIndeterminate = true, StageTitle = Host.RequestLocalizedString("/Plugins/Kinect360/Fixes/NotReady/Stage/InstallingDrivers") });
 
+        await PathsHandler.Setup();
+
         var pathToDriversDirectory = Path.Join(Directory.GetParent(
             Assembly.GetExecutingAssembly().Location)!.FullName, "Assets", "Resources", "Dependencies", "Drivers");
 
-        var driverTemp = (await ApplicationData.Current.TemporaryFolder.CreateFolderAsync(
+        var driverTemp = (await PathsHandler.TemporaryFolder.CreateFolderAsync(
             "Drivers", CreationCollisionOption.OpenIfExists)).Path;
 
         try

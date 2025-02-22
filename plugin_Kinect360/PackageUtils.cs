@@ -4,11 +4,25 @@ using System.IO;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Amethyst.Plugins.Contract;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace plugin_Kinect360;
 
-public static class PackageUtils
+public static class PathsHandler
 {
+    public static async Task Setup()
+    {
+        if (IsAmethystPackaged) return;
+
+        var root = await StorageFolder.GetFolderFromPathAsync(
+            Path.Join(ProgramLocation.DirectoryName!));
+
+        TemporaryFolderUnpackaged = await (await root
+                .CreateFolderAsync("AppData", CreationCollisionOption.OpenIfExists))
+            .CreateFolderAsync("TempState", CreationCollisionOption.OpenIfExists);
+    }
+
     public static bool IsAmethystPackaged
     {
         get
@@ -24,15 +38,11 @@ public static class PackageUtils
         }
     }
 
-    public static string GetAmethystAppDataPath()
-    {
-        return ApplicationData.Current.LocalFolder.Path;
-    }
+    public static FileInfo ProgramLocation => new(Assembly.GetExecutingAssembly().Location);
 
-    public static string GetAmethystTempPath()
-    {
-        return ApplicationData.Current.TemporaryFolder.Path;
-    }
+    public static StorageFolder TemporaryFolder => IsAmethystPackaged ? ApplicationData.Current.TemporaryFolder : TemporaryFolderUnpackaged;
+
+    public static StorageFolder TemporaryFolderUnpackaged { get; set; } // Assigned on Setup()
 }
 
 public static class StorageExtensions
