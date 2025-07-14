@@ -3,7 +3,7 @@
     "messages": [
         {
             "id": "/Plugins/Kinect360/Statuses/Success",
-            "translation": "Successo!\nS_OK\nVa tutto bene!"
+            "translation": "Successo!\nS_OK\nTutto a posto!"
         },
         {
             "id": "/Plugins/Kinect360/Statuses/Initializing",
@@ -271,39 +271,39 @@
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriver",
-            "translation": "Installing Kinect for Windows Audio Array Control..."
+            "translation": "Installazione del Controllo array audio Kinect per Windows..."
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriverSuccess",
-            "translation": "Successfully installed Kinect for Windows Audio Array Control!"
+            "translation": "Controllo array audio Kinect per Windows installato con successo!"
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriver",
-            "translation": "Installing Kinect for Windows Camera..."
+            "translation": "Installazione della fotocamera Kinect per Windows..."
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriverSuccess",
-            "translation": "Successfully installed Kinect for Windows Camera!"
+            "translation": "Fotocamera Kinect per Windows installata con successo!"
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriver",
-            "translation": "Installing Kinect for Windows Security Controller..."
+            "translation": "Installazione del Controller di sicurezza di Kinect per Windows..."
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriverSuccess",
-            "translation": "Successfully installed Kinect for Windows Security Controller!"
+            "translation": "Controller di sicurezza di Kinect per Windows installato con successo!"
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/AssignMicrophoneDriver",
-            "translation": "Assigning driver \"(Generic USB Audio)\" for Kinect USB Audio!"
+            "translation": "Assegnazione del driver \"(Audio USB generico)\" per l'audio USB del Kinect!"
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/AssignMicrophoneDriverSuccess",
-            "translation": "Successfully assigned driver \"(Generic USB Audio)\" to Kinect USB Audio!"
+            "translation": "Driver \"(Audio USB generico)\" assegnato con successo all'audio USB del Kinect!"
         },
         {
             "id": "/Plugins/Kinect360/Fixes/NotReady/Prompt/MustDisableMemoryIntegrity",
-            "translation": "Memory Integrity Detected!\n\nThe Kinect for Windows drivers do not support Memory Integrity. Please disable Memory Integrity to be able to use your Kinect."
+            "translation": "Integrità della memoria rilevata!\n\nI driver di Kinect per Windows non supportano l'Integrità della memoria. Disabilita l'Integrità della memoria per poter usare il tuo Kinect."
         }
     ]
 }
