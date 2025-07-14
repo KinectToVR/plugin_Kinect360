@@ -94,6 +94,14 @@
             "translation": "Toolkit Kinect per Xbox 360"
         },
         {
+            "id": "/Plugins/Kinect360/Fixes/NotPowered/Name",
+            "translation": "Non Alimentato"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Name",
+            "translation": "Non Pronto"
+        },
+        {
             "id": "/JointsEnum/JointHead",
             "translation": "Testa"
         },
@@ -103,7 +111,7 @@
         },
         {
             "id": "/JointsEnum/JointSpineShoulder",
-            "translation": "Colonna Vertebrale (Spalle)"
+            "translation": "Spina Dorsale (Spalle)"
         },
         {
             "id": "/JointsEnum/JointShoulderLeft",
