@@ -35,63 +35,63 @@
         },
         {
             "id": "/Plugins/Kinect360/Settings/Labels/Angle",
-            "translation": "Angolo di rialzo:"
+            "translation": "Angolo di inclinazione:"
         },
         {
             "id": "/Plugins/Kinect360/Stages/Downloading/WiX",
-            "translation": "Downloading WiX Toolset..."
+            "translation": "Scaricando Toolset WiX..."
         },
         {
             "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Extraction",
-            "translation": "Toolset extraction failed! Exception: {0}"
+            "translation": "Estrazione toolset fallita! Errore: {0}"
         },
         {
             "id": "/Plugins/Kinect360/Stages/Exceptions/WiX/Installation",
-            "translation": "Toolset installation failed! Exception: {0}"
+            "translation": "Installazione toolset fallita! Errore: {0}"
         },
         {
             "id": "/Plugins/Kinect360/Stages/Downloading/Runtime",
-            "translation": "Downloading Kinect for Xbox 360 Runtime..."
+            "translation": "Scaricando Runtime Kinect per Xbox 360..."
         },
         {
             "id": "/Plugins/Kinect360/Stages/Exceptions/Runtime/Installation",
-            "translation": "Runtime installation failed! Exception: {0}"
+            "translation": "Installazione runtime fallita! Errore: {0}"
         },
         {
             "id": "/Plugins/Kinect360/Stages/Downloading/Toolkit",
-            "translation": "Downloading Kinect for Xbox 360 Toolkit..."
+            "translation": "Scaricando Toolkit Kinect per Xbox 360..."
         },
         {
             "id": "/Plugins/Kinect360/Stages/Exceptions/Toolkit/Installation",
-            "translation": "Toolkit installation failed! Exception: {0}"
+            "translation": "Installazione Toolkit fallita! Errore: {0}"
         },
         {
             "id": "/Plugins/Kinect360/Stages/Unpacking",
-            "translation": "Unpacking {0}..."
+            "translation": "Spacchettando {0}..."
         },
         {
             "id": "/Plugins/Kinect360/Stages/Installing",
-            "translation": "Installing {0}..."
+            "translation": "Installando {0}..."
         },
         {
             "id": "/Plugins/Kinect360/Stages/Exceptions/Other",
-            "translation": "Exception: {0}"
+            "translation": "Errore: {0}"
         },
         {
             "id": "/Plugins/Kinect360/Stages/Dark/Error/Timeout",
-            "translation": "Failed to execute dark.exe in the allocated time!"
+            "translation": "Esecuzione dark.exe fallita nel tempo allocato!"
         },
         {
             "id": "/Plugins/Kinect360/Stages/Dark/Error/Result",
-            "translation": "Dark.exe exited with error code: {0}"
+            "translation": "Dark.exe terminato con codice errore: {0}"
         },
         {
             "id": "/Plugins/Kinect360/Dependencies/Runtime/Name",
-            "translation": "Kinect for Xbox 360 Runtime"
+            "translation": "Runtime Kinect per Xbox 360"
         },
         {
             "id": "/Plugins/Kinect360/Dependencies/Toolkit/Name",
-            "translation": "Kinect for Xbox 360 Toolkit"
+            "translation": "Toolkit Kinect per Xbox 360"
         },
         {
             "id": "/JointsEnum/JointHead",
@@ -211,7 +211,7 @@
         },
         {
             "id": "/InputActions/Names/PointRight",
-            "translation": "Punto Destro"
+            "translation": "Puntamento Destro"
         },
         {
             "id": "/InputActions/Descriptions/PauseLeft",
@@ -228,6 +228,82 @@
         {
             "id": "/InputActions/Descriptions/PointRight",
             "translation": "Gesto di puntamento con la mano destra"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/CheckingMemoryIntegrity",
+            "translation": "Controllando se l'Integrità della Memoria è abilitata..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/MemoryIntegrityEnabled",
+            "translation": "Integrità della Memoria rilevata! Disabilitala, riavvia Windows e riprova."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/CheckingKinectMicrophone",
+            "translation": "Verificando se il microfono del Kinect sia acceso..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/KinectV1MicrophoneFound",
+            "translation": "Microfono Kinect Xbox 360 trovato!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/KinectMicrophoneDisabled",
+            "translation": "Il microfono del Kinect è disabilitato! L'SDK Kinect per Windows non funzionerà correttamente. Abilita il microfono..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallingDrivers",
+            "translation": "Installando driver Kinect per Windows..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallDeviceDriver",
+            "translation": "Installando Kinect per Dispositivo Windows..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallDeviceDriverSuccess",
+            "translation": "Kinect per Dispositivo Windows installato con successo!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioDriver",
+            "translation": "Installando Controllo Audio Kinect per Windows..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioDriverSuccess",
+            "translation": "Controllo Audio Kinect per Windows installato con successo!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriver",
+            "translation": "Installing Kinect for Windows Audio Array Control..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallAudioArrayDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Audio Array Control!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriver",
+            "translation": "Installing Kinect for Windows Camera..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallCameraDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Camera!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriver",
+            "translation": "Installing Kinect for Windows Security Controller..."
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/InstallSecurityDriverSuccess",
+            "translation": "Successfully installed Kinect for Windows Security Controller!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/AssignMicrophoneDriver",
+            "translation": "Assigning driver \"(Generic USB Audio)\" for Kinect USB Audio!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Stage/AssignMicrophoneDriverSuccess",
+            "translation": "Successfully assigned driver \"(Generic USB Audio)\" to Kinect USB Audio!"
+        },
+        {
+            "id": "/Plugins/Kinect360/Fixes/NotReady/Prompt/MustDisableMemoryIntegrity",
+            "translation": "Memory Integrity Detected!\n\nThe Kinect for Windows drivers do not support Memory Integrity. Please disable Memory Integrity to be able to use your Kinect."
         }
     ]
 }
