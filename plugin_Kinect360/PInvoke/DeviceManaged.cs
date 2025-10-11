@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.JavaScript;
 using System.Text;
-using Amethyst.Plugins.Contract;
+using Amethyst.Contract;
 
 namespace plugin_Kinect360.PInvoke;
 

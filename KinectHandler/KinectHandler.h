@@ -10,10 +10,39 @@ using namespace Collections::Generic;
 using namespace ComponentModel::Composition;
 using namespace Runtime::InteropServices;
 
-using namespace Amethyst::Plugins::Contract;
-
 namespace KinectHandler
 {
+    private enum TrackedJointTypeInternal
+    {
+        JointHead,
+        JointNeck,
+        JointSpineShoulder,
+        JointShoulderLeft,
+        JointElbowLeft,
+        JointWristLeft,
+        JointHandLeft,
+        JointHandTipLeft,
+        JointThumbLeft,
+        JointShoulderRight,
+        JointElbowRight,
+        JointWristRight,
+        JointHandRight,
+        JointHandTipRight,
+        JointThumbRight,
+        JointSpineMiddle,
+        JointSpineWaist,
+        JointHipLeft,
+        JointKneeLeft,
+        JointFootLeft,
+        JointFootTipLeft,
+        JointHipRight,
+        JointKneeRight,
+        JointFootRight,
+        JointFootTipRight,
+        JointManual,
+        JointCount
+    };
+
     public ref class KinectJoint sealed
     {
     public:
@@ -72,31 +101,29 @@ namespace KinectHandler
             const auto& states = kinect_->tracking_states();
 
             auto trackedKinectJoints = gcnew List<KinectJoint^>;
-            for each (auto v in Enum::GetValues<TrackedJointType>())
+            for (auto v = 0; v < JointCount; v++)
             {
-                if (v == TrackedJointType::JointHandTipLeft ||
-                    v == TrackedJointType::JointHandTipRight ||
-                    v == TrackedJointType::JointThumbLeft ||
-                    v == TrackedJointType::JointThumbRight ||
-                    v == TrackedJointType::JointNeck ||
-                    v == TrackedJointType::JointManual)
+                if (v == JointHandTipLeft ||
+                    v == JointHandTipRight ||
+                    v == JointThumbLeft ||
+                    v == JointThumbRight ||
+                    v == JointNeck ||
+                    v == JointManual)
                     continue; // Skip unsupported joints
 
                 auto joint = gcnew KinectJoint(static_cast<int>(v));
-
-                joint->TrackingState =
-                    states[kinect_->KinectJointType(static_cast<int>(v))];
+                joint->TrackingState = states[kinect_->KinectJointType(v)];
 
                 joint->Position = Vector3(
-                    positions[kinect_->KinectJointType(static_cast<int>(v))].x,
-                    positions[kinect_->KinectJointType(static_cast<int>(v))].y,
-                    positions[kinect_->KinectJointType(static_cast<int>(v))].z);
+                    positions[kinect_->KinectJointType(v)].x,
+                    positions[kinect_->KinectJointType(v)].y,
+                    positions[kinect_->KinectJointType(v)].z);
 
                 joint->Orientation = Quaternion(
-                    orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.x,
-                    orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.y,
-                    orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.z,
-                    orientations[kinect_->KinectJointType(static_cast<int>(v))].absoluteRotation.rotationQuaternion.w);
+                    orientations[kinect_->KinectJointType(v)].absoluteRotation.rotationQuaternion.x,
+                    orientations[kinect_->KinectJointType(v)].absoluteRotation.rotationQuaternion.y,
+                    orientations[kinect_->KinectJointType(v)].absoluteRotation.rotationQuaternion.z,
+                    orientations[kinect_->KinectJointType(v)].absoluteRotation.rotationQuaternion.w);
 
                 trackedKinectJoints->Add(joint);
             }

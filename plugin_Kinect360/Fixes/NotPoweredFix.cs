@@ -1,4 +1,4 @@
-﻿using Amethyst.Plugins.Contract;
+﻿using Amethyst.Contract;
 using Microsoft.VisualBasic;
 using plugin_Kinect360.PInvoke;
 using System;

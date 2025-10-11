@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.System;
-using Amethyst.Plugins.Contract;
+using Amethyst.Contract;
 using NAudio.CoreAudioApi;
 using plugin_Kinect360.PInvoke;
 

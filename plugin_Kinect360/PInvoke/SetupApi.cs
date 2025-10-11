@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
-using Amethyst.Plugins.Contract;
+using Amethyst.Contract;
 
 namespace plugin_Kinect360.PInvoke;
 

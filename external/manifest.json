@@ -1,7 +1,17 @@
 {
-  "version": "1.0.0.0",
-  "display_name": "Xbox 360 Kinect",
-  "download_":  "plugin_Kinect360.zip",
-  "changelog": "Added AppSounds on Settings UI actions.",
-  "guid": "K2VRTEAM-AME2-APII-DVCE-DVCEKINECTV1"
+  "name": "Xbox 360 Kinect",
+  "description": "Ame2 plugin for the Xbox 360 Kinect.",
+  "guid": "K2VRTEAM-AME2-APII-DVCE-DVCEKINECTV1",
+  "type": "device",
+  "author": "K2VR Team",
+  "artifacts": [
+    {
+      "version": "2.0.0.0",
+      "contract": "2.0.0.0",
+      "platform": "windows",
+      "name": "Kinect V2",
+      "download": "plugin_Kinect360.zip",
+      "changelog": "Initial release of the Kinect V1 plugin."
+    }
+  ]
 }

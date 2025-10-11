@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Windows.ApplicationModel;
 using Windows.Storage;
-using Amethyst.Plugins.Contract;
+using Amethyst.Contract;
 using System.Reflection;
 using System.Threading.Tasks;
 
